@@ -1,0 +1,418 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+:root {
+    --bg-color: #222438;
+    --grid-color: rgba(255, 255, 255, 0.06);
+    --col-bg: rgba(238, 238, 238, 0.05);
+    --text-color: #d6d6d6;
+    --card-bg: #333;
+    --menu-bg: rgba(34, 36, 56, 0.95);
+    --border-color: rgba(214, 214, 214, 0.3);
+    --hover-bg: rgba(255, 255, 255, 0.1);
+}
+
+/* Quando o body tiver a classe light-mode, as cores mudam */
+body.light-mode {
+    --bg-color: #f0f2f5;
+    --grid-color: rgba(0, 0, 0, 0.05);
+    --col-bg: rgba(0, 0, 0, 0.03);
+    --text-color: #333;
+    --card-bg: #ffffff;
+    --menu-bg: rgba(255, 255, 255, 0.95);
+    --border-color: rgba(0, 0, 0, 0.3);
+    --hover-bg: rgba(0, 0, 0, 0.05);
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    overflow: hidden; /* Impede a rolagem vertical da página inteira */
+    height: 100vh;
+}
+
+.container {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    height: 100vh; /* Trava a altura em exatos 100% da tela */
+    padding: 20px;
+    box-sizing: border-box;
+    gap: 20px; /* Adicionado para separar as colunas sem usar bordas */
+    
+    /* Efeito de grade no fundo */
+    background-image: 
+    repeating-linear-gradient(
+        to right,
+        transparent 0 50px,
+        var(--grid-color) 50px 51px
+    ),
+    repeating-linear-gradient(
+        to bottom,
+        transparent 0 50px,
+        var(--grid-color) 50px 51px
+    );
+}
+
+.col {
+    background-color: var(--col-bg); /* Fundo translúcido delimitando a coluna */
+    border-radius: 24px;
+    padding: 20px;
+    width: 320px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    max-height: 100%; /* Adapta automaticamente o tamanho se a barra horizontal aparecer */
+    box-sizing: border-box;
+}
+
+.col-drag-handle {
+    color: rgba(214, 214, 214, 0.4);
+    cursor: grab;
+    font-size: 1.6em;
+    line-height: 1;
+    user-select: none;
+    letter-spacing: -2px; /* Deixa os pontos mais juntos como um dado */
+    flex-shrink: 0;
+}
+
+.col-drag-handle:active {
+    cursor: grabbing;
+}
+
+.col.dragging-col {
+    opacity: 0.4;
+}
+
+.title {
+    display: flex;
+    align-items: center;
+    padding-bottom: 15px;
+    margin-bottom: 10px;
+    position: relative;
+    gap: 10px; /* Adiciona espaçamento uniforme entre os elementos */
+}
+
+.col-title {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    resize: none;
+    overflow: hidden;
+    color: var(--text-color);
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.5em;
+    font-weight: 600;
+    text-align: center;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    flex: 1; /* Faz o título preencher todo o espaço restante */
+    min-height: 28px;
+}
+
+.delete-col-btn {
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    color: var(--text-color);
+    transition: transform 0.2s, color 0.2s;
+    flex-shrink: 0;
+}
+
+.delete-col-btn:hover {
+    transform: scale(1.2);
+    color: #ec5f5b; /* Mantendo a cor que você ajustou por último */
+}
+
+.col-color-picker {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    flex-shrink: 0;
+}
+
+.col-color-picker::-webkit-color-swatch {
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.col-color-picker::-moz-color-swatch {
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.add-card-btn {
+    background-color: transparent;
+    border: 2px dashed var(--border-color);
+    color: var(--text-color);
+    border-radius: 10px;
+    padding: 8px;
+    margin-top: 15px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.5em;
+    text-align: center;
+    transition: background-color 0.2s;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.add-card-btn:hover {
+    background-color: var(--hover-bg);
+}
+
+.add-column-col {
+    background-color: var(--col-bg);
+    border: 2px dashed var(--border-color);
+    border-radius: 24px;
+    margin: 0; 
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.add-column-col:hover {
+    background-color: var(--hover-bg);
+}
+
+.add-column-col span {
+    font-size: 1.5em;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    flex: 1;
+    overflow-y: auto;
+    min-height: 0;
+    padding: 10px 5px; /* Evita que o overflow corte a sombra do cartão */
+}
+
+.card {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border-top: 30px solid #e6b905;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    padding: 15px;
+    width: 250px;
+    min-height: 150px;
+    cursor: grab;
+    position: relative;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    height: max-content;
+}
+
+.card:active,
+.card.dragging-card {
+    cursor: grabbing;
+    opacity: 0.9;
+    transform: scale(1.02) rotate(2deg);
+    box-shadow: 0 20px 50px #000;
+    z-index: 100;
+}
+
+.delete-card-btn {
+    position: absolute;
+    bottom: 100%; /* Move o botão para a área da borda superior */
+    right: 0;
+    top: auto;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 10px;
+    background: transparent;
+    border: none;
+    font-family: cursive;
+    font-size: larger;
+    cursor: pointer;
+    color: #333;
+    transition: transform 0.2s;
+}
+
+.delete-card-btn:hover {
+    transform: scale(1.2);
+    color: #000;
+}
+
+.card-title {
+    margin: 0 0 10px 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    resize: none;
+    overflow: hidden;
+    color: var(--text-color);
+    font-size: 1.2em;
+    font-weight: 600;
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 28px;
+}
+
+.card-content {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    resize: none;
+    overflow: hidden;
+    color: inherit;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    width: 100%;
+    min-height: 28px;
+}
+
+.col-title::placeholder, 
+.card-title::placeholder, 
+.card-content::placeholder {
+    color: var(--text-color);
+    opacity: 0.5;
+    font-weight: normal;
+}
+
+/* Scrollbars estilizadas combinando com a cor dos cartões */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #aaa;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #aaa;
+}
+
+/* --- CSS do Menu de Engrenagem --- */
+.settings-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.gear-btn {
+    background: none;
+    border: none;
+    color: var(--text-color);
+    font-size: 24px;
+    cursor: pointer;
+    transition: transform 0.5s ease;
+}
+
+.gear-btn:hover { transform: rotate(90deg); color: #e6b905; }
+
+.settings-menu {
+    position: absolute;
+    top: 40px;
+    right: 0;
+    width: 250px;
+    background: var(--menu-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    
+    /* Animação de expansão */
+    transform: scale(0);
+    transform-origin: top right;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.settings-menu.active { transform: scale(1); }
+
+.menu-header {
+    font-size: 0.85em;
+    color: #e6b905;
+    margin-bottom: 15px;
+    word-break: break-all;
+}
+
+.menu-btn {
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    color: var(--text-color);
+    padding: 10px 0;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.menu-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+.menu-btn.logout:hover { color: #ec5f5b; }
+
+/* --- Switch de Tema --- */
+.theme-switch-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9em;
+    margin: 15px 0;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+}
+
+.switch input { opacity: 0; width: 0; height: 0; }
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #555;
+    transition: .4s;
+    border-radius: 20px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 14px; width: 14px;
+    left: 3px; bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider { background-color: #e6b905; }
+input:checked + .slider:before { transform: translateX(20px); }

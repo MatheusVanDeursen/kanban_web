@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Quadro Kanban</title>
+    <link rel="stylesheet" href="css/kanban.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/default.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="container">
+        <!-- As colunas serão injetadas aqui pelo JavaScript -->
+        
+        <div class="col add-column-col" id="add-column-btn">
+            <span>+ Nova Coluna</span>
+        </div>
+    </div>
+
+    <div class="settings-container">
+        <button id="settings-toggle-btn" class="gear-btn">
+            <i class="fas fa-cog"></i>
+        </button>
+
+        <div id="settings-menu" class="settings-menu">
+            <div class="menu-header">
+                <span id="display-email">carregando...</span>
+            </div>
+            <div class="menu-body">
+                <button class="menu-btn" disabled title="Em breve">
+                    <i class="fas fa-user"></i> Conta
+                </button>
+                
+                <div class="theme-switch-row">
+                    <span><i class="fas fa-moon"></i> Modo Escuro</span>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <hr>
+
+                <button id="logout-btn" class="menu-btn logout">
+                    <i class="fas fa-sign-out-alt"></i> Sair
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/index.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/scroll-behaviour.min.js"></script>
+    
+    <script src="scripts/kanban.js"></script>
+</body>
+</html>

@@ -1,0 +1,155 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+:root {
+    --bg-color: #222438;
+    --text-color: #d6d6d6;
+    --grid-color: rgba(255, 255, 255, 0.06);
+    --card-bg: rgba(238, 238, 238, 0.05);
+    --border-color: rgba(255, 255, 255, 0.1);
+    --title-color: #fff;
+    --subtitle-color: rgba(214, 214, 214, 0.6);
+    --input-bg: rgba(0, 0, 0, 0.2);
+    --input-color: #fff;
+    --primary-color: #e6b905;
+    --primary-hover: #ffcc00;
+    --btn-text: #222438;
+    --shadow-color: rgba(0, 0, 0, 0.5);
+}
+
+body.light-mode {
+    --bg-color: #f0f2f5;
+    --text-color: #333;
+    --grid-color: rgba(0, 0, 0, 0.05);
+    --card-bg: #ffffff;
+    --border-color: rgba(0, 0, 0, 0.3);
+    --title-color: #333;
+    --subtitle-color: #666;
+    --input-bg: rgba(0, 0, 0, 0.03);
+    --input-color: #333;
+    --primary-color: #e6b905;
+    --primary-hover: #ffcc00;
+    --btn-text: #222438;
+    --shadow-color: rgba(0, 0, 0, 0.15);
+}
+
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: 
+    repeating-linear-gradient(to right, transparent 0 50px, var(--grid-color) 50px 51px),
+    repeating-linear-gradient(to bottom, transparent 0 50px, var(--grid-color) 50px 51px);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+}
+
+.login-card {
+    background-color: var(--card-bg);
+    backdrop-filter: blur(10px);
+    border-radius: 24px;
+    padding: 40px;
+    box-shadow: 0 20px 50px var(--shadow-color);
+    text-align: center;
+    border: 1px solid var(--border-color);
+    transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+
+h1 {
+    margin: 0 0 10px 0;
+    color: var(--title-color);
+    font-size: 2em;
+}
+
+p {
+    margin: 0 0 30px 0;
+    color: var(--subtitle-color);
+}
+
+.input-group {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.9em;
+    color: var(--primary-color);
+}
+
+input {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    background-color: var(--input-bg);
+    color: var(--input-color);
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.2s, background-color 0.3s, color 0.3s;
+}
+
+input:focus {
+    border-color: var(--primary-color);
+}
+
+button#submit-btn {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    background-color: var(--primary-color);
+    color: var(--btn-text);
+    font-weight: 600;
+    font-size: 1em;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+button#submit-btn:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-2px);
+}
+
+.toggle-container {
+    margin-top: 25px;
+    font-size: 0.9em;
+}
+
+#toggle-btn {
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    cursor: pointer;
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+.theme-toggle-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: var(--text-color);
+    font-size: 24px;
+    cursor: pointer;
+    transition: color 0.3s, transform 0.3s;
+    z-index: 1000;
+}
+
+.theme-toggle-btn:hover {
+    color: var(--primary-color);
+    transform: scale(1.1);
+}
