@@ -123,7 +123,7 @@ button#submit-btn:hover {
 }
 
 .toggle-container {
-    margin-top: 25px;
+    margin-top: 15px;
     font-size: 0.9em;
 }
 
@@ -152,4 +152,31 @@ button#submit-btn:hover {
 .theme-toggle-btn:hover {
     color: var(--primary-color);
     transform: scale(1.1);
+}
+
+/* Estilos do Separador e Botão Social */
+.separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 25px 0 20px 0;
+    color: var(--subtitle-color);
+    font-size: 0.85em;
+}
+
+.separator::before,
+.separator::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.separator span {
+    padding: 0 10px;
+}
+
+.google-btn-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
 }

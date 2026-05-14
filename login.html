@@ -6,6 +6,8 @@
     <title>Login - Kanban</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="css/login.css">
+    <!-- Adicionando o SDK Oficial do Google Identity Services -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
     <button id="login-theme-toggle" class="theme-toggle-btn" title="Alternar Tema">
@@ -27,6 +29,15 @@
                 </div>
                 <button type="submit" id="submit-btn">Entrar</button>
             </form>
+
+            <!-- Separador e Botão do Google -->
+            <div class="separator">
+                <span>ou</span>
+            </div>
+            
+            <div class="google-btn-wrapper">
+                <div id="google-button-div"></div>
+            </div>
             
             <div class="toggle-container">
                 <span id="toggle-text">Não tem uma conta?</span>
