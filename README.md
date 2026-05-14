@@ -1,16 +1,26 @@
 # Kanban Board Web UI 🎨
 
-Uma interface de usuário fluida e responsiva para gerenciamento de tarefas em estilo Kanban. Este projeto foi desenvolvido inteiramente com **Vanilla JavaScript, HTML5 e CSS3**, sem o uso de frameworks pesados, focando em performance, manipulação direta do DOM e usabilidade.
+Uma interface de usuário fluida e responsiva para gerenciamento de tarefas em estilo Kanban. Este projeto foi desenvolvido inteiramente com **Vanilla JavaScript, HTML5 e CSS3**, focando em performance, manipulação direta do DOM e usabilidade avançada sem a dependência de frameworks pesados.
 
 ---
 
 ## ✨ Funcionalidades
 
-- **Autenticação:** Integração fluida de login e cadastro na mesma tela
-- **Drag & Drop otimizado:** Movimentação suave de cards entre colunas com cálculo dinâmico de posições
-- **Suporte mobile:** Uso de polyfill para garantir funcionamento do drag and drop em dispositivos touch (smartphones e tablets), incluindo rolagem horizontal automática (*auto-scroll*)
-- **Edição inline:** Títulos de colunas e conteúdos dos cards podem ser editados diretamente, com salvamento automático no evento `blur`
-- **Theming inteligente:** Suporte a modo claro e escuro via CSS Variables. Detecta automaticamente a preferência do sistema (`matchMedia`) e permite alternância manual com persistência no `localStorage`
+- **Autenticação completa:** Fluxo unificado de login, cadastro e recuperação de senha com validação de tokens
+- **Google OAuth 2.0:** Login social integrado utilizando o Google Identity Services SDK
+- **Interface otimista (Optimistic UI):**
+  - Atualização imediata da UI após ações do usuário
+  - Sistema de *toast notifications* ("Salvando...", "Salvo")
+  - **Rollback automático:** se a API falhar, o card retorna à posição original
+- **Drag & Drop inteligente:** Movimentação suave com auto-redimensionamento baseado no conteúdo
+- **Theming dinâmico:**
+  - Suporte a modo claro e escuro com CSS variables
+  - Detecção automática via `matchMedia`
+  - Persistência da escolha no `localStorage`
+  - Integração visual com botão de login Google
+- **Tratamento de estado vazio/erro:**
+  - Telas amigáveis para falhas de conexão
+  - Botões de retry sem recarregar a página (comportamento SPA)
 
 ---
 
@@ -28,26 +38,20 @@ cd kanban-web
 
 ### 2. Requisito prévio
 
-Certifique-se de que a API (backend) esteja rodando localmente na porta 3000.
+Certifique-se de que a API (backend) esteja rodando localmente.
 
 ### 3. Inicie a aplicação
 
-Como é um projeto Vanilla, não há necessidade de build.
+Para garantir o funcionamento correto (especialmente para autenticação Google e evitar problemas de CORS com `file://`), utilize um servidor local.
 
-Basta abrir o arquivo:
+Abra o projeto com uma ferramenta como:
+
+- Live Server (extensão do VS Code)
+
+E carregue o arquivo:
 
 ```
 login.html
 ```
 
-Recomendação: utilize a extensão **Live Server** do VS Code para evitar problemas com CORS ao usar o protocolo `file://`.
-
 ---
-
-## 🧠 Arquitetura de Comunicação (Optimistic UI)
-
-O frontend aplica o conceito de **interface otimista**.
-
-Quando o usuário realiza uma ação (como mover um card), a alteração visual acontece imediatamente na tela, enquanto a requisição `PATCH` é enviada em segundo plano para o servidor.
-
-Isso garante uma experiência fluida, sem bloqueios de interface ou necessidade de loaders.
