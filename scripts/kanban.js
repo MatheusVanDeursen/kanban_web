@@ -1,6 +1,31 @@
 const API_URL = 'http://localhost:3000/api';
 const TOKEN = localStorage.getItem('kanban_token');
 
+// Cria o indicador de sincronização na tela
+const syncIndicator = document.createElement('div');
+syncIndicator.className = 'sync-status';
+document.body.appendChild(syncIndicator);
+let syncTimeout;
+
+function updateSyncStatus(state, message) {
+    clearTimeout(syncTimeout);
+    syncIndicator.className = `sync-status show ${state}`;
+    
+    let icon = '';
+    if (state === 'saving') icon = '<i class="fas fa-sync-alt fa-spin-custom"></i>';
+    if (state === 'saved') icon = '<i class="fas fa-check"></i>';
+    if (state === 'error') icon = '<i class="fas fa-exclamation-triangle"></i>';
+    
+    syncIndicator.innerHTML = `${icon} <span>${message}</span>`;
+
+    // Esconde a mensagem de sucesso ou erro após 3 segundos
+    if (state === 'saved' || state === 'error') {
+        syncTimeout = setTimeout(() => {
+            syncIndicator.classList.remove('show');
+        }, 3000);
+    }
+}
+
 // Ativa o suporte a toque no celular
 MobileDragDrop.polyfill({
     // Permite que o usuário segure o dedo por 250ms para começar a arrastar
@@ -17,6 +42,10 @@ if (!TOKEN) {
 }
 
 async function apiFetch(endpoint, method = 'GET', body = null) {
+    const isMutation = method !== 'GET';
+    
+    if (isMutation) updateSyncStatus('saving', 'Salvando...');
+
     const options = {
         method,
         headers: {
@@ -26,30 +55,49 @@ async function apiFetch(endpoint, method = 'GET', body = null) {
     };
     if (body) options.body = JSON.stringify(body);
 
-    const response = await fetch(`${API_URL}${endpoint}`, options);
-    if (response.status === 401) {
-        localStorage.removeItem('kanban_token');
-        window.location.href = 'login.html';
+    try {
+        const response = await fetch(`${API_URL}${endpoint}`, options);
+        
+        if (response.status === 401) {
+            localStorage.removeItem('kanban_token');
+            window.location.href = 'login.html';
+            return;
+        }
+        
+        if (!response.ok) throw new Error('Falha na API');
+        
+        if (isMutation) updateSyncStatus('saved', 'Salvo na nuvem');
+        return response.json();
+    } catch (error) {
+        if (isMutation) updateSyncStatus('error', 'Você está offline ou ocorreu um erro.');
+        throw error; // Re-lança o erro para o Rollback capturar
     }
-    if (!response.ok) throw new Error('Falha na API');
-    return response.json();
 }
 
 document.addEventListener('DOMContentLoaded', loadBoard);
 
 async function loadBoard() {
+    const container = document.querySelector('.container');
+    
     try {
-        const columns = await apiFetch('/columns/board');
-        const container = document.querySelector('.container');
-        const addColBtn = document.getElementById('add-column-btn');
-
-        // Limpa o que for necessário mantendo o botão de adicionar
-        const existingCols = container.querySelectorAll('.col:not(.add-column-col)');
-        existingCols.forEach(c => c.remove());
+        // Indica visualmente que está tentando carregar
+        updateSyncStatus('saving', 'Conectando ao servidor...');
         
+        const columns = await apiFetch('/columns/board');
+        
+        // Limpa tudo para garantir um estado limpo (útil se o usuário clicar em "Tentar Novamente")
+        container.innerHTML = '';
+        
+        // Recria o botão de Adicionar Coluna dinamicamente
+        const addColBtn = document.createElement('div');
+        addColBtn.className = 'col add-column-col';
+        addColBtn.id = 'add-column-btn';
+        addColBtn.innerHTML = '<span>+ Nova Coluna</span>';
+        
+        // Monta as colunas
         columns.forEach(colData => {
             const colElement = createColumnElement(colData);
-            container.insertBefore(colElement, addColBtn);
+            container.appendChild(colElement);
             
             colData.cards.forEach(cardData => {
                 const cardElement = createCardElement(cardData, colData.color);
@@ -57,14 +105,36 @@ async function loadBoard() {
             });
         });
 
+        // Adiciona o botão de nova coluna no final
+        container.appendChild(addColBtn);
         setupAddColumnButton();
 
+        // Aguarda a renderização e ajusta os tamanhos de texto
         setTimeout(() => {
             document.querySelectorAll('textarea').forEach(ta => autoResize.call(ta));
         }, 10);
 
+        updateSyncStatus('saved', 'Quadro carregado');
+
     } catch (error) {
         console.error("Erro ao carregar o quadro.", error);
+        
+        // Remove a notificação de carregando
+        updateSyncStatus('error', 'Falha na conexão');
+        
+        // Injeta a Tela de Erro (Estado Vazio)
+        container.innerHTML = `
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; padding-top: 100px;">
+                <i class="fas fa-server" style="font-size: 4em; color: #ec5f5b; margin-bottom: 20px;"></i>
+                <h2 style="margin: 0 0 10px 0;">Erro de Conexão</h2>
+                <p style="color: var(--text-color); opacity: 0.6; text-align: center; margin-bottom: 30px;">
+                    Não conseguimos alcançar o servidor.<br>Verifique sua internet ou se a API está online.
+                </p>
+                <button onclick="loadBoard()" style="background-color: #e6b905; color: #222438; padding: 12px 24px; border: none; border-radius: 10px; font-family: 'Poppins', sans-serif; font-weight: bold; font-size: 1em; cursor: pointer; transition: transform 0.2s;">
+                    <i class="fas fa-sync-alt"></i> Tentar Novamente
+                </button>
+            </div>
+        `;
     }
 }
 
@@ -188,19 +258,29 @@ function setupCardUpdate(card) {
 }
 
 function setupCardDragEvents(card) {
-    card.addEventListener('dragstart', () => card.classList.add('dragging-card'));
-    
+    // Variáveis para guardar o estado original (Rollback)
+    let originalColId = null;
+    let originalPosition = null;
+    let originalNextSibling = null;
+
+    card.addEventListener('dragstart', () => {
+        card.classList.add('dragging-card');
+        
+        // 1. Fotografa o estado do card ANTES de ele ser movido
+        const currentCol = card.closest('.col');
+        originalColId = currentCol.dataset.colId;
+        originalPosition = card.dataset.position;
+        originalNextSibling = card.nextElementSibling;
+    });
+
     card.addEventListener('dragend', async () => {
         card.classList.remove('dragging-card');
         
         const col = card.closest('.col');
         if (!col) return;
 
-        // CORREÇÃO: Atualiza a cor do topo do card ao soltar na nova coluna!
         const colorPicker = col.querySelector('.col-color-picker');
-        if (colorPicker) {
-            card.style.borderTopColor = colorPicker.value;
-        }
+        if (colorPicker) card.style.borderTopColor = colorPicker.value;
 
         const contentDiv = col.querySelector('.content');
         const cardsInColumn = [...contentDiv.querySelectorAll('.card')];
@@ -208,20 +288,37 @@ function setupCardDragEvents(card) {
         let newPos = 1.0;
         
         if (cardsInColumn.length > 1) {
-            if (index === 0) {
-                newPos = parseFloat(cardsInColumn[1].dataset.position) / 2;
-            } else if (index === cardsInColumn.length - 1) {
-                newPos = parseFloat(cardsInColumn[index - 1].dataset.position) + 1.0;
-            } else {
-                newPos = (parseFloat(cardsInColumn[index - 1].dataset.position) + parseFloat(cardsInColumn[index + 1].dataset.position)) / 2;
-            }
+            if (index === 0) newPos = parseFloat(cardsInColumn[1].dataset.position) / 2;
+            else if (index === cardsInColumn.length - 1) newPos = parseFloat(cardsInColumn[index - 1].dataset.position) + 1.0;
+            else newPos = (parseFloat(cardsInColumn[index - 1].dataset.position) + parseFloat(cardsInColumn[index + 1].dataset.position)) / 2;
         }
         
         card.dataset.position = newPos;
-        await apiFetch(`/cards/${card.dataset.cardId}/move`, 'PATCH', { 
-            column_id: col.dataset.colId, 
-            position: newPos 
-        });
+        
+        // 2. Tenta salvar no banco de dados
+        try {
+            await apiFetch(`/cards/${card.dataset.cardId}/move`, 'PATCH', { 
+                column_id: col.dataset.colId, 
+                position: newPos 
+            });
+        } catch (error) {
+            // 3. ROLLBACK: Se a API falhar (caiu internet, erro 500), desfaz a ação!
+            const originalColElement = document.querySelector(`.col[data-col-id="${originalColId}"]`);
+            if (originalColElement) {
+                const originalContentDiv = originalColElement.querySelector('.content');
+                // Coloca o card de volta exatamente onde estava
+                if (originalNextSibling && originalNextSibling.parentNode === originalContentDiv) {
+                    originalContentDiv.insertBefore(card, originalNextSibling);
+                } else {
+                    originalContentDiv.appendChild(card);
+                }
+                
+                // Restaura as propriedades no DOM
+                const originalColor = originalColElement.querySelector('.col-color-picker').value;
+                card.style.borderTopColor = originalColor;
+                card.dataset.position = originalPosition;
+            }
+        }
     });
 }
 

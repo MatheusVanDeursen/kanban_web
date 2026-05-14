@@ -416,3 +416,38 @@ body {
 
 input:checked + .slider { background-color: #e6b905; }
 input:checked + .slider:before { transform: translateX(20px); }
+
+
+
+
+
+
+
+/* --- Indicador de Sincronização (Toast) --- */
+.sync-status {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    z-index: 2000;
+    opacity: 0;
+    transition: opacity 0.3s ease, background-color 0.3s ease;
+    pointer-events: none; /* Garante que não bloqueie cliques acidentais */
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.sync-status.show { opacity: 1; }
+.sync-status.saving { background-color: #e6b905; color: #222438; }
+.sync-status.saved { background-color: #4CAF50; color: #fff; }
+.sync-status.error { background-color: #ec5f5b; color: #fff; }
+
+/* Animação de giro para o ícone de carregamento */
+@keyframes spin { 100% { transform: rotate(360deg); } }
+.fa-spin-custom { animation: spin 1s linear infinite; }
