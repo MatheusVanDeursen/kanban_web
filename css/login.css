@@ -180,3 +180,55 @@ button#submit-btn:hover {
     justify-content: center;
     width: 100%;
 }
+
+/* --- Estilos do Esqueceu a Senha e Mensagens --- */
+.forgot-link {
+    display: block;
+    text-align: right;
+    font-size: 0.85em;
+    color: var(--primary-color);
+    text-decoration: none;
+    margin-top: -10px;
+    margin-bottom: 20px;
+    transition: color 0.2s;
+}
+
+.forgot-link:hover {
+    color: var(--primary-hover);
+    text-decoration: underline;
+}
+
+.message-box {
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 0.9em;
+    display: none;
+    text-align: center;
+    font-weight: 600;
+}
+
+.message-box.success {
+    display: block;
+    background-color: rgba(76, 175, 80, 0.15);
+    color: #4CAF50;
+    border: 1px solid #4CAF50;
+}
+
+.message-box.error {
+    display: block;
+    background-color: rgba(236, 95, 91, 0.15);
+    color: #ec5f5b;
+    border: 1px solid #ec5f5b;
+}
+
+#toggle-btn, #back-to-login {
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    cursor: pointer;
+    font-weight: 600;
+    text-decoration: underline;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1em;
+}
