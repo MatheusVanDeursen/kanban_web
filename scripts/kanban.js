@@ -360,9 +360,70 @@ function getDragAfterElement(container, y) {
 
 function setupColumnDragEvents(col) {
     const handle = col.querySelector('.col-drag-handle');
+    
+    let originalNextSibling = null;
+    let originalPosition = null;
+
     handle.addEventListener('mousedown', () => col.setAttribute('draggable', 'true'));
-    col.addEventListener('dragstart', (e) => { if(e.target === col) col.classList.add('dragging-col'); });
-    col.addEventListener('dragend', () => { col.classList.remove('dragging-col'); col.setAttribute('draggable', 'false'); });
+    
+    col.addEventListener('dragstart', (e) => { 
+        if(e.target === col) {
+            col.classList.add('dragging-col'); 
+            
+            // Grava quem era o vizinho da coluna antes de começar a arrastar
+            originalNextSibling = col.nextElementSibling;
+            originalPosition = col.dataset.position;
+        }
+    });
+    
+    col.addEventListener('dragend', async () => { 
+        col.classList.remove('dragging-col'); 
+        col.setAttribute('draggable', 'false'); 
+
+        // 1. OTIMIZAÇÃO: Se a coluna foi solta no mesmo lugar, não fazemos nada!
+        if (col.nextElementSibling === originalNextSibling) return;
+
+        const container = col.parentNode;
+        const columnsInBoard = [...container.querySelectorAll('.col:not(.add-column-col)')];
+        const index = columnsInBoard.indexOf(col);
+        
+        let newPos = 1.0;
+        
+        if (columnsInBoard.length > 1) {
+            if (index === 0) {
+                newPos = parseFloat(columnsInBoard[1].dataset.position) / 2;
+            } else if (index === columnsInBoard.length - 1) {
+                newPos = parseFloat(columnsInBoard[index - 1].dataset.position) + 1.0;
+            } else {
+                newPos = (parseFloat(columnsInBoard[index - 1].dataset.position) + parseFloat(columnsInBoard[index + 1].dataset.position)) / 2;
+            }
+        }
+        
+        col.dataset.position = newPos;
+
+        // 2. Captura os valores atuais para não quebrar o Backend
+        const currentTitle = col.querySelector('.col-title').value;
+        const currentColor = col.querySelector('.col-color-picker').value;
+
+        try {
+            await apiFetch(`/columns/${col.dataset.colId}`, 'PATCH', { 
+                title: currentTitle,
+                color: currentColor,
+                position: newPos 
+            });
+        } catch (error) {
+            console.error("Erro ao salvar posição:", error);
+            
+            // 3. Rollback suave: se o servidor falhar, volta exatamente de onde saiu
+            if (originalNextSibling && originalNextSibling.parentNode === container) {
+                container.insertBefore(col, originalNextSibling);
+            } else {
+                const addBtn = document.getElementById('add-column-btn');
+                container.insertBefore(col, addBtn);
+            }
+            col.dataset.position = originalPosition;
+        }
+    });
 }
 
 const mainContainer = document.querySelector('.container');
