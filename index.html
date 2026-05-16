@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Carregando - Kanban</title>
+    <style>
+        body {
+            background-color: #222438;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        // Assim que a página abrir, verifica se o usuário já fez login antes
+        const token = localStorage.getItem('kanban_token');
+
+        if (token) {
+            window.location.replace('kanban.html');
+        } else {
+            window.location.replace('login.html');
+        }
+    </script>
+</body>
+</html>
