@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3000/api';
+const API_URL = 'http://192.168.15.27:3000/api';
 const TOKEN = localStorage.getItem('kanban_token');
 
 // Cria o indicador de sincronização na tela
