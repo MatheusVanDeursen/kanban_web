@@ -1,4 +1,4 @@
-const API_URL = 'http://192.168.15.27:3000/api';
+const API_URL = 'https://api-kanban.matheusvandeursen.com/api';
 
 // Elementos do DOM
 const resetForm = document.getElementById('reset-form');
