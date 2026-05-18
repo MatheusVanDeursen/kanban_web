@@ -9,7 +9,7 @@ Este repositório concentra o front-end da aplicação (SPA), com foco em simpli
 
 ## 💡 Motivação
 
-Este projeto surgiu da vontade de aprender como implementar umaa lógica de Drag & Drop. Eu queria uma ferramenta simples para me organizar e se possível melhorar minah produtividade de algum forma. Acabei optando por um quadro Kanban com inspiração estética no Sticky Notes. Ironicamnente, acabei usando o próprio quadro Kanban para planejar e executar o desenvolvimento do quadro Kanban. A partir disso, fui imaginando mais funcionalidades interessantes para explorar e adicionar nele. Esse é o resultado.
+Este projeto surgiu da vontade de aprender como implementar uma lógica de Drag & Drop. Eu queria uma ferramenta simples para me organizar e se possível melhorar minha produtividade de alguma forma. Acabei optando por um quadro Kanban com inspiração estética no Sticky Notes. Ironicamnente, acabei usando o próprio quadro Kanban para planejar e executar o desenvolvimento do quadro Kanban. A partir disso, fui imaginando mais funcionalidades interessantes para explorar e adicionar nele. Esse é o resultado.
 
 ---
 
@@ -105,25 +105,17 @@ O sistema de temas utiliza **CSS Custom Properties** para facilitar ajustes de c
 
 ---
 
-## 📂 Estrutura de Arquivos
+### 📧 Fluxos de conta com e-mail (via API)
 
-```
-root/
-│
-├── css/
-│   └── estilos, variáveis de tema e layout
-│
-├── scripts/
-│   ├── kanban.js
-│   ├── login.js
-│   └── reset-password.js
-│
-├── CNAME
-│   └── configuração de domínio (quando aplicável)
-│
-└── *.html
-    └── telas separadas (com lógica desacoplada nos scripts)
-```
+Alguns fluxos de conta resultam no envio de e-mails transacionais — responsabilidade do **backend (Kanban Board API)**:
+
+- **Cadastro:** após criar a conta, o usuário pode receber um e-mail de boas-vindas.
+- **Recuperação de senha:** ao solicitar redefinição, o backend envia um e-mail com token/link e aplica regras de expiração.
+
+Do lado do front-end, a UI apenas:
+- coleta as informações (e-mail, credenciais, etc.)
+- chama os endpoints correspondentes
+- apresenta feedback de estado (ex.: solicitação enviada, instruções para verificar a caixa de entrada)
 
 ---
 
