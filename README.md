@@ -7,6 +7,12 @@ Este repositório concentra o front-end da aplicação (SPA), com foco em simpli
 
 ---
 
+## 💡 Motivação
+
+Este projeto surgiu da vontade de aprender como implementar umaa lógica de Drag & Drop. Eu queria uma ferramenta simples para me organizar e se possível melhorar minah produtividade de algum forma. Acabei optando por um quadro Kanban com inspiração estética no Sticky Notes. Ironicamnente, acabei usando o próprio quadro Kanban para planejar e executar o desenvolvimento do quadro Kanban. A partir disso, fui imaginando mais funcionalidades interessantes para explorar e adicionar nele. Esse é o resultado.
+
+---
+
 ## 🔗 Links do Projeto
 
 - 🌐 **Aplicação em Produção:** https://kanban.matheusvandeursen.com
@@ -16,12 +22,8 @@ Este repositório concentra o front-end da aplicação (SPA), com foco em simpli
 
 ## 🖼️ Prévia da Interface (Screenshot)
 
-![Preview do Kanban Web UI](./docs/images/kanban-web-ui.png)
-
-**Como adicionar a imagem**
-1. Crie a pasta `docs/images/` (se ainda não existir)
-2. Adicione um arquivo chamado `kanban-web-ui.png` (ou ajuste o nome no link acima)
-3. Faça commit normalmente
+![Preview do Login](./img/kanban_board.png)
+![Preview do Quadro Kanban](./img/kanban_login.png)
 
 ---
 
