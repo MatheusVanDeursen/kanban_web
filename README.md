@@ -1,57 +1,131 @@
 # Kanban Board Web UI 🎨
 
-Uma interface de usuário fluida e responsiva para gerenciamento de tarefas em estilo Kanban. Este projeto foi desenvolvido inteiramente com **Vanilla JavaScript, HTML5 e CSS3**, focando em performance, manipulação direta do DOM e usabilidade avançada sem a dependência de frameworks pesados.
+Interface web do **Kanban Board**, construída em **Vanilla JavaScript** (sem frameworks) e consumindo a API do projeto.  
+Este repositório concentra o front-end da aplicação (SPA), com foco em simplicidade, controle direto do DOM e organização modular do código.
+
+> Nota: recursos voltados a **mobile** (especialmente Drag & Drop por toque) existem de forma parcial/experimental e **ainda não foram validados completamente**.
 
 ---
 
-## ✨ Funcionalidades
+## 🔗 Links do Projeto
 
-- **Autenticação completa:** Fluxo unificado de login, cadastro e recuperação de senha com validação de tokens
-- **Google OAuth 2.0:** Login social integrado utilizando o Google Identity Services SDK
-- **Interface otimista (Optimistic UI):**
-  - Atualização imediata da UI após ações do usuário
-  - Sistema de *toast notifications* ("Salvando...", "Salvo")
-  - **Rollback automático:** se a API falhar, o card retorna à posição original
-- **Drag & Drop inteligente:** Movimentação suave com auto-redimensionamento baseado no conteúdo
-- **Theming dinâmico:**
-  - Suporte a modo claro e escuro com CSS variables
-  - Detecção automática via `matchMedia`
-  - Persistência da escolha no `localStorage`
-  - Integração visual com botão de login Google
-- **Tratamento de estado vazio/erro:**
-  - Telas amigáveis para falhas de conexão
-  - Botões de retry sem recarregar a página (comportamento SPA)
+- 🌐 **Aplicação em Produção:** https://kanban.matheusvandeursen.com
+- ⚙️ **Repositório do Backend (API):** https://github.com/MatheusVanDeursen/kanban_api
 
 ---
 
-## 🚀 Como rodar o projeto
+## 🖼️ Prévia da Interface (Screenshot)
 
-Este projeto é totalmente estático e consome a API do backend:
-https://github.com/SeuUsuario/kanban-api
+![Preview do Kanban Web UI](./docs/images/kanban-web-ui.png)
 
-### 1. Clone o repositório
+**Como adicionar a imagem**
+1. Crie a pasta `docs/images/` (se ainda não existir)
+2. Adicione um arquivo chamado `kanban-web-ui.png` (ou ajuste o nome no link acima)
+3. Faça commit normalmente
 
-```bash
-git clone https://github.com/MatheusVanDeursen/kanban_web
-cd kanban-web
-```
+---
 
-### 2. Requisito prévio
+## 📸 Fluxo de Navegação e Estados do Cliente
 
-Certifique-se de que a API (backend) esteja rodando localmente.
+O roteamento e a troca de telas acontecem no cliente (*Client-Side Routing*), evitando requisições de páginas adicionais ao servidor de hospedagem estática.
 
-### 3. Inicie a aplicação
+```mermaid
+graph TD
+    A[Acesso Inicial /] --> B{index.html<br/>Roteador de Entrada}
+    B -- kanban_token presente --> C[kanban.html<br/>Painel Principal]
+    B -- token ausente --> D[login.html<br/>Fluxo de Acesso]
 
-Para garantir o funcionamento correto (especialmente para autenticação Google e evitar problemas de CORS com `file://`), utilize um servidor local.
+    subgraph Mecanismo de Autenticação
+        D --> E[Estado: Login<br/>Autenticação Local / Google OAuth]
+        D --> F[Estado: Cadastro<br/>Criação de Conta]
+        D --> G[Estado: Recuperação<br/>Solicitação de Reset]
+    end
 
-Abra o projeto com uma ferramenta como:
-
-- Live Server (extensão do VS Code)
-
-E carregue o arquivo:
-
-```
-login.html
+    C -- Token expirado / erro 401 --> D
 ```
 
 ---
+
+## ✨ Decisões de Interface e Arquitetura
+
+### 🧩 Arquitetura sem framework (Vanilla JS)
+
+A interface foi implementada sem frameworks (React/Vue/Angular) para manter o bundle enxuto e permitir controle direto sobre renderização e ciclo de vida do DOM.
+
+- Criação e atualização de elementos via APIs nativas (`document.createElement`, `appendChild`, etc.)
+- Delegação de eventos (*event delegation*) para reduzir listeners e simplificar manutenção
+- Estrutura modular para separar regras de UI, chamadas à API e utilitários
+
+---
+
+### 🧭 Roteamento leve para hospedagem estática
+
+Para lidar com limitações comuns de hospedagem estática (ex.: GitHub Pages), o ponto de entrada (`index.html`) atua como roteador simples.
+
+**Em linhas gerais:**
+- Intercepta o carregamento inicial
+- Verifica presença/validade do token no `localStorage`
+- Redireciona usando `window.location.replace` (evita histórico desnecessário)
+
+---
+
+### 🔄 Sincronização assíncrona e UI otimista
+
+A aplicação adota *Optimistic UI* para manter a experiência mais fluida em ações comuns (criar/editar/remover/mover cards e colunas).
+
+**Como funciona:**
+- Atualiza o DOM imediatamente após a ação do usuário
+- Realiza a persistência via wrapper centralizado (ex.: `apiFetch`)
+- Exibe feedback de sincronização (ex.: “Salvando…”, “Salvo na nuvem”)
+
+**Rollback (quando necessário):**
+- Mantém referências do estado anterior (ex.: posição e nó de referência)
+- Em falhas (4xx/5xx/offline), restaura a UI para reduzir inconsistências
+
+---
+
+### 📱 Mobile (estado atual)
+
+Há esforços para suportar interação por toque, mas **não é um aspecto totalmente testado/garantido** no momento.
+
+- Drag & Drop por toque: existe suporte inicial e pode depender de *polyfill* (ex.: `MobileDragDrop`)
+- Ajustes de gesto/rolagem (ex.: prevenir *pull-to-refresh*) podem exigir calibração por navegador
+
+---
+
+### 🎨 Temas com CSS Variables
+
+O sistema de temas utiliza **CSS Custom Properties** para facilitar ajustes de cor/contraste.
+
+- Controle por classe no `body` (`document.body.classList`)
+- Preferência de tema pode ser persistida localmente
+- Pode detectar preferências do sistema via `prefers-color-scheme`
+
+---
+
+## 📂 Estrutura de Arquivos
+
+```
+root/
+│
+├── css/
+│   └── estilos, variáveis de tema e layout
+│
+├── scripts/
+│   ├── kanban.js
+│   ├── login.js
+│   └── reset-password.js
+│
+├── CNAME
+│   └── configuração de domínio (quando aplicável)
+│
+└── *.html
+    └── telas separadas (com lógica desacoplada nos scripts)
+```
+
+---
+
+## ✅ Status
+
+O front-end está operacional para uso em desktop e fluxos principais.  
+Recursos voltados a mobile podem requerer validação adicional e ajustes de compatibilidade.
