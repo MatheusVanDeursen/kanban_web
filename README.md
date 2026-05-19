@@ -20,7 +20,7 @@ Este projeto surgiu da vontade de aprender como implementar uma lógica de Drag 
 
 ---
 
-## 🖼️ Prévia da Interface (Screenshot)
+## 🖼️ Prévia da Interface
 
 ![Preview do Login](./img/kanban_board.png)
 ![Preview do Quadro Kanban](./img/kanban_login.png)
@@ -107,15 +107,13 @@ O sistema de temas utiliza **CSS Custom Properties** para facilitar ajustes de c
 
 ### 📧 Fluxos de conta com e-mail (via API)
 
-Alguns fluxos de conta resultam no envio de e-mails transacionais — responsabilidade do **backend (Kanban Board API)**:
+As comunicações transacionais do sistema são disparadas pelo **backend (Kanban Board API)**, que agora utiliza uma infraestrutura profissional (Resend com domínio autenticado) para garantir a entrega fora da caixa de spam.
 
-- **Cadastro:** após criar a conta, o usuário pode receber um e-mail de boas-vindas.
-- **Recuperação de senha:** ao solicitar redefinição, o backend envia um e-mail com token/link e aplica regras de expiração.
+Do lado do front-end, a arquitetura foca em gerenciar o estado da interface e o roteamento de forma fluida durante esses eventos:
 
-Do lado do front-end, a UI apenas:
-- coleta as informações (e-mail, credenciais, etc.)
-- chama os endpoints correspondentes
-- apresenta feedback de estado (ex.: solicitação enviada, instruções para verificar a caixa de entrada)
+- **Boas-vindas (Cadastro):** A UI coleta as credenciais, consome o endpoint de registro e trata o feedback visual de sucesso (ou alertas de conflito, caso o e-mail já exista). O disparo do e-mail de boas-vindas ocorre em segundo plano pela API.
+- **Recuperação de Senha:** - **Solicitação:** A interface disponibiliza o formulário de resgate e exibe feedbacks neutros de confirmação após o envio (uma boa prática de segurança para evitar confirmar quais e-mails estão na base de dados).
+  - **Redefinição:** Quando o usuário clica no link recebido por e-mail, o front-end intercepta o token diretamente via *URL parameters* (`?token=...`), renderiza a tela de nova senha e repassa os dados validados de volta para o backend.
 
 ---
 
