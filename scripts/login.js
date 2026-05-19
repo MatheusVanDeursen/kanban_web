@@ -145,7 +145,7 @@ authForm.addEventListener('submit', async (e) => {
         endpoint = '/users/login';
         bodyData.password = password;
     } else if (currentState === 'register') {
-        endpoint = '/users/register'; 
+        endpoint = '/users/signup'; 
         bodyData.password = password;
     } else if (currentState === 'forgot') {
         endpoint = '/users/request-reset';
