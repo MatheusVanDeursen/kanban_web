@@ -31,6 +31,7 @@ body {
     color: var(--text-color);
     overflow: hidden; /* Impede a rolagem vertical da página inteira */
     height: 100vh;
+    height: 100dvh; /* Adapta-se dinamicamente à barra de navegação do mobile */
 }
 
 .container {
@@ -38,6 +39,7 @@ body {
     flex-wrap: nowrap;
     overflow-x: auto;
     height: 100vh; /* Trava a altura em exatos 100% da tela */
+    height: 100dvh; /* Adapta-se dinamicamente à barra de navegação do mobile */
     padding: 20px;
     box-sizing: border-box;
     gap: 20px; /* Adicionado para separar as colunas sem usar bordas */
@@ -417,11 +419,11 @@ body {
 input:checked + .slider { background-color: #e6b905; }
 input:checked + .slider:before { transform: translateX(20px); }
 
-
-
-
-
-
+/* --- Adicionais do Polyfill --- */
+.dragging-card, .dragging-col {
+    /* Essa propriedade torna o elemento "invisível" para o toque enquanto é arrastado, permitindo que o dedo interaja diretamente com as colunas no fundo */
+    pointer-events: none !important; 
+}
 
 /* --- Indicador de Sincronização (Toast) --- */
 .sync-status {
@@ -451,3 +453,33 @@ input:checked + .slider:before { transform: translateX(20px); }
 /* Animação de giro para o ícone de carregamento */
 @keyframes spin { 100% { transform: rotate(360deg); } }
 .fa-spin-custom { animation: spin 1s linear infinite; }
+
+/* --- Responsividade (Mobile) --- */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px 10px;
+        gap: 15px;
+    }
+
+    .col {
+        width: 85vw; /* Ocupa a maior parte da tela, deixando a próxima coluna levemente visível */
+        max-width: 320px;
+        padding: 15px;
+    }
+
+    .card {
+        width: 100%; /* Faz o cartão se ajustar à largura fluida da coluna */
+        max-width: 250px;
+    }
+
+    .settings-container {
+        top: 15px;
+        right: 15px;
+    }
+
+    .col-drag-handle {
+        padding: 15px 20px; /* Aumenta substancialmente a área de toque (touch target) invisível */
+        margin: -15px -10px; /* Compensa o padding para não empurrar o título e manter o visual */
+        font-size: 1.8em; /* Torna o indicador sutilmente maior visualmente no celular */
+    }
+}

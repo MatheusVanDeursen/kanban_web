@@ -282,6 +282,10 @@ function setupCardDragEvents(card) {
         const col = card.closest('.col');
         if (!col) return;
 
+        if (col.dataset.colId === originalColId && card.nextElementSibling === originalNextSibling) { return; } // Se o card foi solto no mesmo lugar, não faz nada
+
+        // 1. OTIMIZAÇÃO: Atualiza a interface IMEDIATAMENTE para dar feedback instantâneo pro usuário
+
         const colorPicker = col.querySelector('.col-color-picker');
         if (colorPicker) card.style.borderTopColor = colorPicker.value;
 
@@ -341,6 +345,8 @@ function setupColorPicker(picker) {
 }
 
 function setupContainerEvents(container) {
+    container.addEventListener('dragenter', e => e.preventDefault()); // Obrigatório para o Polyfill validar a zona de soltura
+
     container.addEventListener('dragover', e => {
         const dragging = document.querySelector('.dragging-card');
         if (!dragging) return;
@@ -367,7 +373,11 @@ function setupColumnDragEvents(col) {
     let originalNextSibling = null;
     let originalPosition = null;
 
+    // Mantém o mousedown para o PC
     handle.addEventListener('mousedown', () => col.setAttribute('draggable', 'true'));
+
+    // NOVO: Adiciona o touchstart para o celular
+    handle.addEventListener('touchstart', () => col.setAttribute('draggable', 'true'), { passive: true });
     
     col.addEventListener('dragstart', (e) => { 
         if(e.target === col) {
@@ -430,6 +440,7 @@ function setupColumnDragEvents(col) {
 }
 
 const mainContainer = document.querySelector('.container');
+mainContainer.addEventListener('dragenter', e => e.preventDefault());// NOVO: Obrigatório para a reordenação de colunas no mobile
 mainContainer.addEventListener('dragover', e => {
     // 1. Lógica de Rolagem Horizontal (Auto-scroll) para toda a tela
     const threshold = 80; // Área (em pixels) nas bordas para ativar o scroll
