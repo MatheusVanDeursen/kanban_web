@@ -234,12 +234,15 @@ function setupDeleteCardButton(btn) {
 function setupColumnUpdate(col) {
     const titleInput = col.querySelector('.col-title');
     const colorInput = col.querySelector('.col-color-picker');
+    
     const save = async () => {
         await apiFetch(`/columns/${col.dataset.colId}`, 'PATCH', {
             title: titleInput.value,
-            color: colorInput.value
+            color: colorInput.value,
+            position: parseFloat(col.dataset.position)
         });
     };
+    
     titleInput.addEventListener('blur', save);
     colorInput.addEventListener('change', save);
 }
