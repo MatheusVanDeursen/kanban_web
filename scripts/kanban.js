@@ -265,6 +265,7 @@ function setupCardDragEvents(card) {
     let originalColId = null;
     let originalPosition = null;
     let originalNextSibling = null;
+    let originalIndex = null;
 
     card.addEventListener('dragstart', () => {
         card.classList.add('dragging-card');
@@ -274,6 +275,8 @@ function setupCardDragEvents(card) {
         originalColId = currentCol.dataset.colId;
         originalPosition = card.dataset.position;
         originalNextSibling = card.nextElementSibling;
+        const cardsInColumn = [...currentCol.querySelectorAll('.card')];
+        originalIndex = cardsInColumn.indexOf(card);
     });
 
     card.addEventListener('dragend', async () => {
@@ -282,16 +285,16 @@ function setupCardDragEvents(card) {
         const col = card.closest('.col');
         if (!col) return;
 
-        if (col.dataset.colId === originalColId && card.nextElementSibling === originalNextSibling) { return; } // Se o card foi solto no mesmo lugar, não faz nada
-
-        // 1. OTIMIZAÇÃO: Atualiza a interface IMEDIATAMENTE para dar feedback instantâneo pro usuário
-
-        const colorPicker = col.querySelector('.col-color-picker');
-        if (colorPicker) card.style.borderTopColor = colorPicker.value;
-
+        // 1. PRIMEIRO definimos a posição atual (currentIndex)
         const contentDiv = col.querySelector('.content');
         const cardsInColumn = [...contentDiv.querySelectorAll('.card')];
-        const index = cardsInColumn.indexOf(card);
+        const currentIndex = cardsInColumn.indexOf(card);
+
+        // 2. DEPOIS checamos se ele voltou pro mesmo lugar exato
+        if (col.dataset.colId === originalColId && currentIndex === originalIndex) { 
+            return; 
+        }
+
         let newPos = 1.0;
         
         if (cardsInColumn.length > 1) {
@@ -372,6 +375,7 @@ function setupColumnDragEvents(col) {
     
     let originalNextSibling = null;
     let originalPosition = null;
+    let originalIndex = null;
 
     // Mantém o mousedown para o PC
     handle.addEventListener('mousedown', () => col.setAttribute('draggable', 'true'));
@@ -386,6 +390,10 @@ function setupColumnDragEvents(col) {
             // Grava quem era o vizinho da coluna antes de começar a arrastar
             originalNextSibling = col.nextElementSibling;
             originalPosition = col.dataset.position;
+
+            const container = col.parentNode;
+            const columnsInBoard = [...container.querySelectorAll('.col:not(.add-column-col)')];
+            originalIndex = columnsInBoard.indexOf(col);
         }
     });
     
@@ -393,14 +401,13 @@ function setupColumnDragEvents(col) {
         col.classList.remove('dragging-col'); 
         col.setAttribute('draggable', 'false'); 
 
-        // 1. OTIMIZAÇÃO: Se a coluna foi solta no mesmo lugar, não fazemos nada!
-        if (col.nextElementSibling === originalNextSibling) return;
-
+        // 1. PRIMEIRO definimos a posição atual (currentIndex)
         const container = col.parentNode;
         const columnsInBoard = [...container.querySelectorAll('.col:not(.add-column-col)')];
-        const index = columnsInBoard.indexOf(col);
-        
-        let newPos = 1.0;
+        const currentIndex = columnsInBoard.indexOf(col);
+
+        // 2. DEPOIS verificamos se a coluna não mudou de lugar
+        if (currentIndex === originalIndex) return;
         
         if (columnsInBoard.length > 1) {
             if (index === 0) {

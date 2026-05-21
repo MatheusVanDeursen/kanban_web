@@ -419,12 +419,6 @@ body {
 input:checked + .slider { background-color: #e6b905; }
 input:checked + .slider:before { transform: translateX(20px); }
 
-/* --- Adicionais do Polyfill --- */
-.dragging-card, .dragging-col {
-    /* Essa propriedade torna o elemento "invisível" para o toque enquanto é arrastado, permitindo que o dedo interaja diretamente com as colunas no fundo */
-    pointer-events: none !important; 
-}
-
 /* --- Indicador de Sincronização (Toast) --- */
 .sync-status {
     position: fixed;
