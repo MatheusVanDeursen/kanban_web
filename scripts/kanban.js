@@ -33,6 +33,8 @@ MobileDragDrop.polyfill({
     holdToDrag: 250, 
     dragImageTranslateOverride: MobileDragDrop.scrollBehaviourDragImageTranslateOverride
 });
+document.addEventListener('dragenter', e => e.preventDefault()); // Obrigatório para o Polyfill validar a zona de soltura
+
 
 // Impede que a tela atualize (Pull-to-refresh) ou role acidentalmente durante o drag
 window.addEventListener('touchmove', function() {}, {passive: false});
@@ -279,7 +281,8 @@ function setupCardDragEvents(card) {
         originalIndex = cardsInColumn.indexOf(card);
     });
 
-    card.addEventListener('dragend', async () => {
+    card.addEventListener('dragend', async (e) => {
+        e.stopPropagation(); // Impede que o evento "vaze" e acione o dragend da coluna
         card.classList.remove('dragging-card');
         
         const col = card.closest('.col');
@@ -295,12 +298,16 @@ function setupCardDragEvents(card) {
             return; 
         }
 
+        // Atualiza a cor da borda do card para corresponder à nova coluna
+        const newColor = col.querySelector('.col-color-picker').value;
+        card.style.borderTopColor = newColor;
+
         let newPos = 1.0;
         
         if (cardsInColumn.length > 1) {
-            if (index === 0) newPos = parseFloat(cardsInColumn[1].dataset.position) / 2;
-            else if (index === cardsInColumn.length - 1) newPos = parseFloat(cardsInColumn[index - 1].dataset.position) + 1.0;
-            else newPos = (parseFloat(cardsInColumn[index - 1].dataset.position) + parseFloat(cardsInColumn[index + 1].dataset.position)) / 2;
+            if (currentIndex === 0) newPos = parseFloat(cardsInColumn[1].dataset.position) / 2;
+            else if (currentIndex === cardsInColumn.length - 1) newPos = parseFloat(cardsInColumn[currentIndex - 1].dataset.position) + 1.0;
+            else newPos = (parseFloat(cardsInColumn[currentIndex - 1].dataset.position) + parseFloat(cardsInColumn[currentIndex + 1].dataset.position)) / 2;
         }
         
         card.dataset.position = newPos;
@@ -380,7 +387,7 @@ function setupColumnDragEvents(col) {
     // Mantém o mousedown para o PC
     handle.addEventListener('mousedown', () => col.setAttribute('draggable', 'true'));
 
-    // NOVO: Adiciona o touchstart para o celular
+    // Adiciona o touchstart para o celular
     handle.addEventListener('touchstart', () => col.setAttribute('draggable', 'true'), { passive: true });
     
     col.addEventListener('dragstart', (e) => { 
@@ -409,13 +416,15 @@ function setupColumnDragEvents(col) {
         // 2. DEPOIS verificamos se a coluna não mudou de lugar
         if (currentIndex === originalIndex) return;
         
+        let newPos = 1.0;
+
         if (columnsInBoard.length > 1) {
-            if (index === 0) {
+            if (currentIndex === 0) {
                 newPos = parseFloat(columnsInBoard[1].dataset.position) / 2;
-            } else if (index === columnsInBoard.length - 1) {
-                newPos = parseFloat(columnsInBoard[index - 1].dataset.position) + 1.0;
+            } else if (currentIndex === columnsInBoard.length - 1) {
+                newPos = parseFloat(columnsInBoard[currentIndex - 1].dataset.position) + 1.0;
             } else {
-                newPos = (parseFloat(columnsInBoard[index - 1].dataset.position) + parseFloat(columnsInBoard[index + 1].dataset.position)) / 2;
+                newPos = (parseFloat(columnsInBoard[currentIndex - 1].dataset.position) + parseFloat(columnsInBoard[currentIndex + 1].dataset.position)) / 2;
             }
         }
         
@@ -447,7 +456,7 @@ function setupColumnDragEvents(col) {
 }
 
 const mainContainer = document.querySelector('.container');
-mainContainer.addEventListener('dragenter', e => e.preventDefault());// NOVO: Obrigatório para a reordenação de colunas no mobile
+mainContainer.addEventListener('dragenter', e => e.preventDefault());// Obrigatório para a reordenação de colunas no mobile
 mainContainer.addEventListener('dragover', e => {
     // 1. Lógica de Rolagem Horizontal (Auto-scroll) para toda a tela
     const threshold = 80; // Área (em pixels) nas bordas para ativar o scroll
