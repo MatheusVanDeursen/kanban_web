@@ -237,12 +237,28 @@ function setupColumnUpdate(col) {
     const titleInput = col.querySelector('.col-title');
     const colorInput = col.querySelector('.col-color-picker');
     
+    // 1. Guarda o valor inicial ao criar a coluna na tela
+    let lastTitle = titleInput.value;
+    let lastColor = colorInput.value;
+    
     const save = async () => {
-        await apiFetch(`/columns/${col.dataset.colId}`, 'PATCH', {
-            title: titleInput.value,
-            color: colorInput.value,
-            position: parseFloat(col.dataset.position)
-        });
+        // 2. Se nem o título nem a cor mudaram, cancela o salvamento silenciosamente
+        if (titleInput.value === lastTitle && colorInput.value === lastColor) return;
+
+        try {
+            await apiFetch(`/columns/${col.dataset.colId}`, 'PATCH', {
+                title: titleInput.value,
+                color: colorInput.value,
+                position: parseFloat(col.dataset.position)
+            });
+            
+            // 3. Atualiza a memória com os novos valores recém-salvos
+            lastTitle = titleInput.value;
+            lastColor = colorInput.value;
+        } catch (error) {
+            console.error("Erro ao atualizar coluna:", error);
+            // Aqui você poderia fazer titleInput.value = lastTitle para um rollback de texto se quisesse!
+        }
     };
     
     titleInput.addEventListener('blur', save);
@@ -252,12 +268,29 @@ function setupColumnUpdate(col) {
 function setupCardUpdate(card) {
     const titleInput = card.querySelector('.card-title');
     const contentInput = card.querySelector('.card-content');
+    
+    // 1. Guarda o valor inicial do card
+    let lastTitle = titleInput.value;
+    let lastContent = contentInput.value;
+
     const save = async () => {
-        await apiFetch(`/cards/${card.dataset.cardId}`, 'PATCH', {
-            title: titleInput.value,
-            content: contentInput.value
-        });
+        // 2. Verifica se houve alguma alteração real
+        if (titleInput.value === lastTitle && contentInput.value === lastContent) return;
+
+        try {
+            await apiFetch(`/cards/${card.dataset.cardId}`, 'PATCH', {
+                title: titleInput.value,
+                content: contentInput.value
+            });
+            
+            // 3. Atualiza a memória
+            lastTitle = titleInput.value;
+            lastContent = contentInput.value;
+        } catch (error) {
+            console.error("Erro ao atualizar card:", error);
+        }
     };
+
     titleInput.addEventListener('blur', save);
     contentInput.addEventListener('blur', save);
 }
