@@ -1,0 +1,207 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+:root {
+    --bg-color: #222438;
+    --text-color: #d6d6d6;
+    --card-bg: rgba(34, 36, 56, 0.95);
+    --border-color: rgba(255, 255, 255, 0.1);
+    --input-bg: rgba(0, 0, 0, 0.2);
+    --primary-color: #e6b905;
+    --primary-hover: #ffcc00;
+    --danger-color: #ec5f5b;
+    --danger-hover: #d45552;
+    --secondary-bg: rgba(255, 255, 255, 0.05);
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+body.light-mode {
+    --bg-color: #e4e7ec;
+    --text-color: #333;
+    --card-bg: #ffffff;
+    --border-color: rgba(0, 0, 0, 0.15);
+    --input-bg: rgba(0, 0, 0, 0.03);
+    --secondary-bg: rgba(0, 0, 0, 0.03);
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+    min-height: 100vh;
+    min-height: 100dvh;
+    box-sizing: border-box;
+}
+
+.account-container {
+    width: 100%;
+    max-width: 800px;
+}
+
+/* Header */
+.account-header {
+    margin-bottom: 40px;
+}
+
+.back-btn {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 15px;
+    transition: color 0.2s;
+}
+
+.back-btn:hover { color: var(--primary-hover); }
+.back-btn i { transition: transform 0.2s ease; }
+.back-btn:hover i { transform: translateX(-4px); } /* A seta desliza para a esquerda ao passar o mouse */
+
+.account-header h1 {
+    margin: 0;
+    font-size: 2.2em;
+}
+
+/* Cards de Seção */
+.settings-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 15px;
+    padding: 30px;
+    margin-bottom: 25px;
+    box-shadow: var(--shadow);
+}
+
+.settings-card h2 {
+    margin: 0 0 20px 0;
+    font-size: 1.3em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--primary-color);
+}
+
+.section-description {
+    font-size: 0.9em;
+    opacity: 0.8;
+    margin-bottom: 20px;
+}
+
+/* Textos e Inputs */
+.info-group { margin-bottom: 25px; }
+.info-group label, .input-group label {
+    display: block;
+    font-size: 0.85em;
+    opacity: 0.7;
+    margin-bottom: 5px;
+}
+.current-email {
+    font-size: 1.1em;
+    font-weight: 600;
+    margin: 0;
+}
+
+.action-row {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+input {
+    flex: 1;
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    font-family: 'Poppins', sans-serif;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+input:focus { border-color: var(--primary-color); }
+
+/* Botões */
+button {
+    padding: 12px 20px;
+    border-radius: 8px;
+    border: none;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s; /* Removido o transform para focar apenas na cor */
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-primary { background-color: var(--primary-color); color: #222438; }
+.btn-primary:hover { background-color: var(--primary-hover); }
+
+.btn-secondary { background-color: var(--secondary-bg); color: var(--text-color); border: 1px solid var(--border-color); }
+.btn-secondary:hover { background-color: var(--input-bg); }
+
+.btn-danger { background-color: var(--danger-color); color: #fff; }
+.btn-danger:hover { background-color: var(--danger-hover); }
+
+/* Danger Zone Especifico */
+.danger-zone { border: 1px solid var(--danger-color); }
+.danger-zone h2 { color: var(--danger-color); }
+
+/* Elementos Especiais (Lista, Switch e Grid) */
+.linked-account-item, .preference-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: var(--secondary-bg);
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+.account-info { display: flex; align-items: center; gap: 15px; font-size: 1.2em; font-weight: 600; }
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+}
+.stat-box {
+    background-color: var(--secondary-bg);
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    border: 1px solid var(--border-color);
+}
+.stat-box h3 { margin: 0; font-size: 2em; color: var(--primary-color); }
+.stat-box p { margin: 5px 0 0 0; font-size: 0.85em; opacity: 0.8; }
+
+.coming-soon-text {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.85em;
+    opacity: 0.5;
+    font-style: italic;
+}
+
+/* Responsividade (Mobile) */
+@media (max-width: 600px) {
+    .action-row { flex-direction: column; align-items: stretch; }
+    .btn-secondary, .btn-primary, .btn-danger { justify-content: center; }
+    .settings-card { padding: 20px; }
+    .account-header h1 { font-size: 1.8em; }
+    .linked-account-item { flex-direction: column; gap: 15px; align-items: stretch; text-align: center; }
+    .account-info { justify-content: center; }
+}
+
+/* Utilização do Switch já criado anteriormente */
+.switch { position: relative; display: inline-block; width: 40px; height: 20px; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #555; transition: .4s; border-radius: 20px; }
+.slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+input:checked + .slider { background-color: var(--primary-color); }
+input:checked + .slider:before { transform: translateX(20px); }

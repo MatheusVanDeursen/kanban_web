@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Conta - Kanban Board</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/account.css">
+</head>
+<body>
+
+    <div class="account-container">
+        <header class="account-header">
+            <a href="kanban.html" class="back-btn"><i class="fas fa-arrow-left"></i> Voltar ao Quadro</a>
+            <h1>Configurações da Conta</h1>
+        </header>
+
+        <section class="settings-card" style="border-left: 4px solid var(--primary-color);">
+            <h2><i class="fas fa-shield-alt"></i> Autorização</h2>
+            <p class="section-description">Para realizar qualquer alteração abaixo ou excluir sua conta, confirme sua identidade. <br><em style="opacity: 0.7;">(Se você faz login apenas pelo Google, deixe em branco)</em></p>
+            <div class="input-group">
+                <input type="password" id="current-password-input" placeholder="Digite sua senha atual aqui">
+            </div>
+        </section>
+
+        <!-- Perfil e Email -->
+        <section class="settings-card">
+            <h2><i class="fas fa-user"></i> Perfil</h2>
+            <div class="info-group">
+                <label>Email atual</label>
+                <p class="current-email" id="user-email-display">carregando@email.com</p>
+            </div>
+            <div class="input-group">
+                <label>Novo Email</label>
+                <div class="action-row">
+                    <input type="email" id="new-email-input" placeholder="Digite o novo email">
+                    <button id="btn-update-email" class="btn-primary">Atualizar Email</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Segurança (Senha) -->
+        <section class="settings-card">
+            <h2><i class="fas fa-lock"></i> Segurança</h2>
+            <div class="input-group">
+                <label>Nova Senha</label>
+                <div class="action-row">
+                    <input type="password" id="new-password-input" placeholder="Digite a nova senha">
+                    <button id="btn-update-password" class="btn-primary">Alterar Senha</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contas Vinculadas -->
+        <section class="settings-card">
+            <h2><i class="fas fa-link"></i>Contas Vinculadas (Em breve)</h2>
+            <div class="linked-account-item">
+                <div class="account-info">
+                    <i class="fab fa-google"></i>
+                    <span>Google</span>
+                </div>
+                <button class="btn-secondary">Desvincular</button>
+            </div>
+        </section>
+
+        <!-- Preferências -->
+        <section class="settings-card">
+            <h2><i class="fas fa-sliders-h"></i> Central de Preferências</h2>
+            <div class="preference-item">
+                <span>Modo Escuro</span>
+                <label class="switch">
+                    <input type="checkbox" id="theme-toggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <p class="coming-soon-text">Mais funcionalidades em breve...</p>
+        </section>
+
+        <!-- Estatísticas de Uso -->
+        <section class="settings-card">
+            <h2><i class="fas fa-chart-bar"></i> Estatísticas de Uso</h2>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <h3 id="stats-columns">0</h3>
+                    <p>Colunas Criadas</p>
+                </div>
+                <div class="stat-box">
+                    <h3 id="stats-cards">0</h3>
+                    <p>Cards Adicionados</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Exportação de Dados -->
+        <section class="settings-card">
+            <h2><i class="fas fa-file-export"></i> Exportar Dados</h2>
+            <p class="section-description">Faça o download de um backup contendo todas as suas colunas e cards.</p>
+            <button class="btn-secondary"><i class="fas fa-download"></i>Em breve</button>
+        </section>
+
+        <!-- Exclusão de Conta -->
+        <section class="settings-card danger-zone">
+            <h2><i class="fas fa-exclamation-triangle"></i> Excluir Conta</h2>
+            <p class="section-description">Esta é uma ação irreversível. Todos os seus dados serão apagados permanentemente e não poderão ser recuperados.</p>
+            <button id="btn-delete-account" class="btn-danger"><i class="fas fa-trash"></i> Excluir conta permanentemente</button>
+        </section>
+    </div>
+</body>
+<script src="scripts/account.js"></script>
+</html>
