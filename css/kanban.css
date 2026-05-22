@@ -491,6 +491,94 @@ input:checked + .slider:before { transform: translateX(20px); }
     transform: scale(1.05);
 }
 
+/* --- Modal de Exclusão de Coluna --- */
+.delete-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100dvh;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(2px);
+    z-index: 999;
+    animation: fadeIn 0.2s ease;
+}
+
+.col.highlight-for-deletion {
+    position: relative;
+    z-index: 1000; /* Eleva a coluna para ficar por cima do overlay */
+    box-shadow: 0 0 0 2px #ec5f5b, 0 15px 40px rgba(0,0,0,0.5); /* Destaca a coluna com vermelho */
+    transform: scale(1.02);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.delete-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1001; /* Fica acima da coluna em destaque e do overlay */
+    background: var(--menu-bg);
+    border-radius: 15px;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    width: 90%;
+    max-width: 350px;
+    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.delete-modal h3 {
+    margin: 0 0 10px 0;
+    color: #ec5f5b;
+    font-size: 1.5em;
+}
+
+.delete-modal p {
+    font-size: 0.9em;
+    opacity: 0.8;
+    margin-bottom: 20px;
+}
+
+.delete-modal-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.btn-cancel, .btn-confirm {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.btn-cancel {
+    background-color: transparent;
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+}
+
+.btn-cancel:hover { background-color: var(--hover-bg); }
+
+.btn-confirm {
+    background-color: #ec5f5b;
+    color: #fff;
+}
+
+.btn-confirm:hover { background-color: #d45552; transform: scale(1.05); }
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes popIn { 
+    from { transform: translate(-50%, -50%) scale(0.8); opacity: 0; } 
+    to { transform: translate(-50%, -50%) scale(1); opacity: 1; } 
+}
+
 /* --- Responsividade (Mobile) --- */
 @media (max-width: 768px) {
     .container {

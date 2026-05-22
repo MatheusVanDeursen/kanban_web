@@ -218,10 +218,53 @@ function setupAddCardButton(btn) {
 
 function setupDeleteColumnButton(btn) {
     btn.addEventListener('click', async () => {
-        if (!confirm('Excluir esta coluna?')) return;
         const col = btn.closest('.col');
-        await apiFetch(`/columns/${col.dataset.colId}`, 'DELETE');
-        col.remove();
+        const hasCards = col.querySelectorAll('.card').length > 0;
+        
+        if (hasCards) {
+            // Se tiver cards, invoca o Modal Customizado
+            showCustomConfirm(col, async () => {
+                await apiFetch(`/columns/${col.dataset.colId}`, 'DELETE');
+                col.remove();
+            });
+        } else {
+            // Deleção silenciosa se estiver vazio
+            await apiFetch(`/columns/${col.dataset.colId}`, 'DELETE');
+            col.remove();
+        }
+    });
+}
+
+function showCustomConfirm(col, onConfirm) {
+    const overlay = document.createElement('div');
+    overlay.className = 'delete-overlay';
+    
+    const modal = document.createElement('div');
+    modal.className = 'delete-modal';
+    modal.innerHTML = `
+        <h3>Excluir Coluna?</h3>
+        <p>Esta coluna contém cards. Tem certeza que deseja excluí-la permanentemente?</p>
+        <div class="delete-modal-buttons">
+            <button class="btn-cancel">Cancelar</button>
+            <button class="btn-confirm">Excluir</button>
+        </div>
+    `;
+    
+    document.body.appendChild(overlay);
+    document.body.appendChild(modal);
+    col.classList.add('highlight-for-deletion');
+    
+    const closeConfirm = () => {
+        overlay.remove();
+        modal.remove();
+        col.classList.remove('highlight-for-deletion');
+    };
+    
+    overlay.addEventListener('click', closeConfirm);
+    modal.querySelector('.btn-cancel').addEventListener('click', closeConfirm);
+    modal.querySelector('.btn-confirm').addEventListener('click', () => {
+        closeConfirm();
+        onConfirm();
     });
 }
 
