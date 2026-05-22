@@ -30,7 +30,7 @@ function updateSyncStatus(state, message) {
 MobileDragDrop.polyfill({
     // Permite que o usuário segure o dedo por 250ms para começar a arrastar
     // Isso evita que a tela arraste acidentalmente quando o usuário só quer fazer scroll
-    holdToDrag: 250, 
+    holdToDrag: 200, 
     dragImageTranslateOverride: MobileDragDrop.scrollBehaviourDragImageTranslateOverride
 });
 document.addEventListener('dragenter', e => e.preventDefault()); // Obrigatório para o Polyfill validar a zona de soltura

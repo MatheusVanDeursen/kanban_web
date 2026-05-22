@@ -41,6 +41,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
+    height: 100dvh; /* Adapta-se dinamicamente à barra de navegação do mobile */
     background-image: 
     repeating-linear-gradient(to right, transparent 0 50px, var(--grid-color) 50px 51px),
     repeating-linear-gradient(to bottom, transparent 0 50px, var(--grid-color) 50px 51px);
@@ -51,6 +52,7 @@ body {
     width: 100%;
     max-width: 400px;
     padding: 20px;
+    box-sizing: border-box; /* Garante que o padding não faça a largura ultrapassar 100% da tela */
 }
 
 .login-card {
@@ -231,4 +233,20 @@ button#submit-btn:hover {
     text-decoration: underline;
     font-family: 'Poppins', sans-serif;
     font-size: 1em;
+}
+
+/* --- Responsividade (Mobile) --- */
+@media (max-width: 480px) {
+    .login-container {
+        padding: 15px;
+    }
+
+    .login-card {
+        padding: 30px 20px; /* Reduz bastante o preenchimento interno para telas pequenas */
+        border-radius: 20px; /* Suaviza a borda levemente no celular */
+    }
+
+    h1 {
+        font-size: 1.6em; /* Reduz o tamanho do título para economizar espaço vertical */
+    }
 }
