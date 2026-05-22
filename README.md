@@ -3,7 +3,7 @@
 Interface web do **Kanban Board**, construída em **Vanilla JavaScript** (sem frameworks) e consumindo a API do projeto.  
 Este repositório concentra o front-end da aplicação (SPA), com foco em simplicidade, controle direto do DOM e organização modular do código.
 
-> Nota: recursos voltados a **mobile** (especialmente Drag & Drop por toque) existem de forma parcial/experimental e **ainda não foram validados completamente**.
+> Nota: a aplicação agora conta com **suporte completo a dispositivos móveis**, garantindo uma experiência de Drag & Drop fluida via toque e uma interface totalmente responsiva.
 
 ---
 
@@ -78,6 +78,7 @@ A aplicação adota *Optimistic UI* para manter a experiência mais fluida em a�
 **Como funciona:**
 - Atualiza o DOM imediatamente após a ação do usuário
 - Realiza a persistência via wrapper centralizado (ex.: `apiFetch`)
+- **Otimização de requisições:** o sistema avalia o estado anterior e atual dos elementos (ex: edição de texto de cards e colunas), disparando chamadas à API apenas quando há mudanças reais, poupando dados e recursos do servidor.
 - Exibe feedback de sincronização (ex.: “Salvando…”, “Salvo na nuvem”)
 
 **Rollback (quando necessário):**
@@ -86,12 +87,14 @@ A aplicação adota *Optimistic UI* para manter a experiência mais fluida em a�
 
 ---
 
-### 📱 Mobile (estado atual)
+### 📱 Suporte Mobile e UX Aprimorada
 
-Há esforços para suportar interação por toque, mas **não é um aspecto totalmente testado/garantido** no momento.
+A interface foi completamente adaptada para oferecer uma experiência de primeira classe e sem atritos em smartphones e tablets.
 
-- Drag & Drop por toque: existe suporte inicial e pode depender de *polyfill* (ex.: `MobileDragDrop`)
-- Ajustes de gesto/rolagem (ex.: prevenir *pull-to-refresh*) podem exigir calibração por navegador
+- **Drag & Drop por toque:** implementado com sucesso utilizando o *polyfill* `MobileDragDrop`, permitindo segurar, arrastar e soltar cartões e colunas com naturalidade e precisão.
+- **Responsividade inteligente:** uso de unidades dinâmicas modernas (`100dvh`) para adaptar o quadro perfeitamente às barras de navegação retráteis dos navegadores mobile.
+- **Gestos e Usabilidade:** prevenção de comportamentos nativos indesejados (como *pull-to-refresh* acidental), rolagem horizontal automática nas bordas e áreas de toque (*touch targets*) redimensionadas.
+- **Interface Imersiva:** alertas nativos foram substituídos por modais personalizados, limpos e integrados ao design do sistema.
 
 ---
 
@@ -119,5 +122,5 @@ Do lado do front-end, a arquitetura foca em gerenciar o estado da interface e o 
 
 ## ✅ Status
 
-O front-end está operacional para uso em desktop e fluxos principais.  
-Recursos voltados a mobile podem requerer validação adicional e ajustes de compatibilidade.
+O front-end está 100% operacional, entregando uma experiência ágil, fluida e agradável tanto em ambientes desktop quanto em dispositivos móveis.
+Novas funcionalidade estão por vir!
