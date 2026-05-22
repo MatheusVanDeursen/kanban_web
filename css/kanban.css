@@ -9,6 +9,7 @@
     --menu-bg: rgba(34, 36, 56, 0.95);
     --border-color: rgba(214, 214, 214, 0.3);
     --hover-bg: rgba(255, 255, 255, 0.1);
+    --handle-color: rgba(214, 214, 214, 0.4);
 }
 
 body.light-mode {
@@ -20,6 +21,7 @@ body.light-mode {
     --menu-bg: rgba(255, 255, 255, 0.95);
     --border-color: rgba(0, 0, 0, 0.2);
     --hover-bg: rgba(0, 0, 0, 0.12);
+    --handle-color: rgba(0, 0, 0, 0.4);
 }
 
 body {
@@ -70,7 +72,7 @@ body {
 }
 
 .col-drag-handle {
-    color: rgba(214, 214, 214, 0.4);
+    color: var(--handle-color);
     cursor: grab;
     font-size: 1.6em;
     line-height: 1;
@@ -606,5 +608,20 @@ input:checked + .slider:before { transform: translateX(20px); }
         padding: 15px 20px; /* Aumenta substancialmente a área de toque (touch target) invisível */
         margin: -15px -10px; /* Compensa o padding para não empurrar o título e manter o visual */
         font-size: 1.8em; /* Torna o indicador sutilmente maior visualmente no celular */
+    }
+
+    /* --- Ajustes do Modal para Mobile --- */
+    .delete-modal {
+        padding: 20px 15px; /* Reduz o preenchimento interno para telas apertadas */
+        width: 85%;
+    }
+
+    .delete-modal h3 {
+        font-size: 1.25em; /* Título levemente menor para não pesar na tela */
+    }
+
+    .btn-cancel, .btn-confirm {
+        padding: 10px 15px;
+        font-size: 0.9em; /* Botões mais delicados para dedos */
     }
 }
