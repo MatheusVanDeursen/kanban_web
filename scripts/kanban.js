@@ -126,13 +126,13 @@ async function loadBoard() {
         
         // Injeta a Tela de Erro (Estado Vazio)
         container.innerHTML = `
-            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; padding-top: 100px;">
-                <i class="fas fa-server" style="font-size: 4em; color: #ec5f5b; margin-bottom: 20px;"></i>
-                <h2 style="margin: 0 0 10px 0;">Erro de Conexão</h2>
-                <p style="color: var(--text-color); opacity: 0.6; text-align: center; margin-bottom: 30px;">
+            <div class="error-container">
+                <i class="fas fa-server error-icon"></i>
+                <h2 class="error-title">Erro de Conexão</h2>
+                <p class="error-message">
                     Não conseguimos alcançar o servidor.<br>Verifique sua internet ou se a API está online.
                 </p>
-                <button onclick="loadBoard()" style="background-color: #e6b905; color: #222438; padding: 12px 24px; border: none; border-radius: 10px; font-family: 'Poppins', sans-serif; font-weight: bold; font-size: 1em; cursor: pointer; transition: transform 0.2s;">
+                <button onclick="loadBoard()" class="error-retry-btn">
                     <i class="fas fa-sync-alt"></i> Tentar Novamente
                 </button>
             </div>
@@ -150,7 +150,7 @@ function createColumnElement(colData) {
         <div class="title">
             <input type="color" class="col-color-picker" value="${colData.color}" title="Cor da Coluna">
             <div class="col-drag-handle" title="Arraste para mover a coluna">&#8942;&#8942;</div>
-            <textarea class="col-title" rows="1" placeholder="Nome da coluna">${colData.title}</textarea>
+            <textarea class="col-title" rows="1" placeholder="Título">${colData.title}</textarea>
             <button class="delete-col-btn" title="Excluir Coluna">X</button>
         </div>
         <div class="content"></div>
@@ -208,8 +208,8 @@ function setupAddCardButton(btn) {
         const color = col.querySelector('.col-color-picker').value;
         const newCardData = await apiFetch('/cards', 'POST', { 
             column_id: col.dataset.colId, 
-            title: 'Novo Card', 
-            content: 'Descrição...' 
+            title: '', 
+            content: '' 
         });
         const newCard = createCardElement(newCardData, color);
         col.querySelector('.content').appendChild(newCard);

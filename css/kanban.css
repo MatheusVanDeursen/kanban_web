@@ -11,16 +11,15 @@
     --hover-bg: rgba(255, 255, 255, 0.1);
 }
 
-/* Quando o body tiver a classe light-mode, as cores mudam */
 body.light-mode {
-    --bg-color: #f0f2f5;
-    --grid-color: rgba(0, 0, 0, 0.05);
-    --col-bg: rgba(0, 0, 0, 0.03);
-    --text-color: #333;
+    --bg-color: #e4e7ec;
+    --grid-color: rgba(0, 0, 0, 0.06);
+    --col-bg: rgba(255, 255, 255, 0.7);
+    --text-color: #222;
     --card-bg: #ffffff;
     --menu-bg: rgba(255, 255, 255, 0.95);
-    --border-color: rgba(0, 0, 0, 0.3);
-    --hover-bg: rgba(0, 0, 0, 0.05);
+    --border-color: rgba(0, 0, 0, 0.2);
+    --hover-bg: rgba(0, 0, 0, 0.12);
 }
 
 body {
@@ -447,6 +446,50 @@ input:checked + .slider:before { transform: translateX(20px); }
 /* Animação de giro para o ícone de carregamento */
 @keyframes spin { 100% { transform: rotate(360deg); } }
 .fa-spin-custom { animation: spin 1s linear infinite; }
+
+/* --- Tela de Erro de Conexão --- */
+.error-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding-top: 100px;
+}
+
+.error-icon {
+    font-size: 4em;
+    color: #ec5f5b;
+    margin-bottom: 20px;
+}
+
+.error-title {
+    margin: 0 0 10px 0;
+}
+
+.error-message {
+    color: var(--text-color);
+    opacity: 0.6;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.error-retry-btn {
+    background-color: #e6b905;
+    color: #222438;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    font-size: 1em;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.error-retry-btn:hover {
+    transform: scale(1.05);
+}
 
 /* --- Responsividade (Mobile) --- */
 @media (max-width: 768px) {
