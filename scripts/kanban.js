@@ -394,6 +394,19 @@ function setupContainerEvents(container) {
         const dragging = document.querySelector('.dragging-card');
         if (!dragging) return;
         e.preventDefault();
+
+        const threshold = 60; // Área (em pixels) nas bordas superior e inferior para ativar o scroll
+        const speed = 15;     // Velocidade da rolagem
+        const rect = container.getBoundingClientRect();
+        
+        if (e.clientY - rect.top < threshold) {
+            container.scrollTop -= speed;
+        } 
+        else if (rect.bottom - e.clientY < threshold) {
+            container.scrollTop += speed;
+        }
+        // -----------------------------------------------------
+
         const afterElement = getDragAfterElement(container, e.clientY);
         if (afterElement == null) container.appendChild(dragging);
         else container.insertBefore(dragging, afterElement);
