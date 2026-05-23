@@ -95,6 +95,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         const stats = await apiFetch('/users/me/stats');
         document.getElementById('stats-columns').innerText = stats.totalColumns || 0;
         document.getElementById('stats-cards').innerText = stats.totalCards || 0;
+        if (stats.memberSince) {
+            const date = new Date(stats.memberSince);
+            const formattedDate = date.toLocaleDateString('pt-BR');
+            document.getElementById('stats-date').innerText = formattedDate;
+        }
+        
     } catch (error) {
         alert("Erro ao carregar os dados da conta: " + error.message);
     }
