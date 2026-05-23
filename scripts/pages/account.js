@@ -185,12 +185,23 @@ document.addEventListener('DOMContentLoaded', async () => {
         };
 
         // Preenche a interface com os dados do banco
-        document.getElementById('pref-theme').checked = prefs.theme === 'dark';
-        document.getElementById('pref-confirm').checked = prefs.confirmBeforeDelete;
-        document.getElementById('pref-sound').checked = prefs.soundEnabled;
-        document.getElementById('pref-compact').checked = prefs.compactMode;
-        document.getElementById('pref-card-pos').value = prefs.newCardPosition;
-        document.getElementById('pref-color').value = prefs.defaultColor;
+        const prefTheme = document.getElementById('pref-theme');
+        if (prefTheme) prefTheme.checked = prefs.theme === 'dark';
+
+        const prefConfirm = document.getElementById('pref-confirm');
+        if (prefConfirm) prefConfirm.checked = prefs.confirmBeforeDelete;
+
+        const prefSound = document.getElementById('pref-sound');
+        if (prefSound) prefSound.checked = prefs.soundEnabled;
+
+        const prefCompact = document.getElementById('pref-compact');
+        if (prefCompact) prefCompact.checked = prefs.compactMode;
+
+        const prefCardPos = document.getElementById('pref-card-pos');
+        if (prefCardPos) prefCardPos.value = prefs.newCardPosition;
+
+        const prefColor = document.getElementById('pref-color');
+        if (prefColor) prefColor.value = prefs.defaultColor;
 
         // Aplica o tema instantaneamente na tela de conta para refletir o banco de dados
         if (prefs.theme === 'light') {
@@ -315,14 +326,36 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // Escutadores de Evento: Disparam a atualização na API sempre que o usuário altera um valor
-    document.getElementById('pref-theme').addEventListener('change', (e) => updatePreference('theme', e.target.checked ? 'dark' : 'light'));
-    document.getElementById('pref-confirm').addEventListener('change', (e) => updatePreference('confirmBeforeDelete', e.target.checked));
-    document.getElementById('pref-sound').addEventListener('change', (e) => updatePreference('soundEnabled', e.target.checked));
-    document.getElementById('pref-compact').addEventListener('change', (e) => updatePreference('compactMode', e.target.checked));
-    document.getElementById('pref-card-pos').addEventListener('change', (e) => updatePreference('newCardPosition', e.target.value));
+    const prefThemeEl = document.getElementById('pref-theme');
+    if (prefThemeEl) {
+        prefThemeEl.addEventListener('change', (e) => updatePreference('theme', e.target.checked ? 'dark' : 'light'));
+    }
+
+    const prefConfirmEl = document.getElementById('pref-confirm');
+    if (prefConfirmEl) {
+        prefConfirmEl.addEventListener('change', (e) => updatePreference('confirmBeforeDelete', e.target.checked));
+    }
+
+    const prefSoundEl = document.getElementById('pref-sound');
+    if (prefSoundEl) {
+        prefSoundEl.addEventListener('change', (e) => updatePreference('soundEnabled', e.target.checked));
+    }
+
+    const prefCompactEl = document.getElementById('pref-compact');
+    if (prefCompactEl) {
+        prefCompactEl.addEventListener('change', (e) => updatePreference('compactMode', e.target.checked));
+    }
+
+    const prefCardPosEl = document.getElementById('pref-card-pos');
+    if (prefCardPosEl) {
+        prefCardPosEl.addEventListener('change', (e) => updatePreference('newCardPosition', e.target.value));
+    }
     
     // Para o input de cor, usamos 'change' em vez de 'input' para não sobrecarregar a API com chamadas enquanto o usuário arrasta o mouse
-    document.getElementById('pref-color').addEventListener('change', (e) => updatePreference('defaultColor', e.target.value));
+    const prefColorEl = document.getElementById('pref-color');
+    if (prefColorEl) {
+        prefColorEl.addEventListener('change', (e) => updatePreference('defaultColor', e.target.value));
+    }
 
     // ==========================================
     // EXPORTAÇÃO DE DADOS (DOWNLOAD JSON)
