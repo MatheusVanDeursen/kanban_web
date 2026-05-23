@@ -52,7 +52,8 @@ function showModal(contentHtml, isDanger, onConfirm) {
 
     const closeModal = () => { overlay.remove(); modal.remove(); };
     overlay.addEventListener('click', closeModal);
-    modal.querySelector('.btn-cancel').addEventListener('click', closeModal);
+    const cancelBtn = modal.querySelector('.btn-cancel');
+    if (cancelBtn) cancelBtn.addEventListener('click', closeModal);
     modal.querySelector('.btn-confirm').addEventListener('click', () => {
         const passValue = passInput ? passInput.value : null;
         closeModal();
@@ -81,6 +82,18 @@ function confirmDangerModal(title, message, onConfirm) {
             <button class="btn-danger btn-confirm">Prosseguir</button>
         </div>
     `, true, onConfirm);
+}
+
+function alertModal(title, message, isError = false) {
+    return new Promise((resolve) => {
+        showModal(`
+            <h3>${title}</h3>
+            <p>${message}</p>
+            <div class="modal-buttons">
+                <button class="${isError ? 'btn-danger' : 'btn-primary'} btn-confirm">OK</button>
+            </div>
+        `, isError, resolve);
+    });
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -113,10 +126,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                     try {
                         // Envia o token do Google para a nova rota protegida de vínculo
                         await apiFetch('/users/me/link-google', 'POST', { token: googleResponse.credential });
-                        alert("Conta do Google vinculada com sucesso!");
+                        await alertModal("Sucesso", "Conta do Google vinculada com sucesso!");
                         window.location.reload(); // Recarrega para atualizar o estado da tela
                     } catch (err) {
-                        alert(err.message);
+                        alertModal("Erro", err.message, true);
                     }
                 }
             });
@@ -137,10 +150,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 async (currentPassword) => {
                     try {
                         await apiFetch('/users/me/unlink-google', 'POST', { currentPassword: currentPassword || "" });
-                        alert("Conta do Google desvinculada com sucesso! O seu acesso agora é 100% local.");
+                        await alertModal("Sucesso", "Conta do Google desvinculada com sucesso! O seu acesso agora é 100% local.");
                         window.location.reload();
                     } catch (error) {
-                        alert(error.message);
+                        alertModal("Erro", error.message, true);
                     }
                 }
             );
@@ -157,17 +170,23 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
         
     } catch (error) {
-        alert("Erro ao carregar os dados da conta: " + error.message);
+        alertModal("Erro", "Erro ao carregar os dados da conta: " + error.message, true);
     }
 
     // 2. ATUALIZAR EMAIL
     document.getElementById('btn-update-email').addEventListener('click', () => {
         const newEmail = document.getElementById('new-email-input').value;
 
-        if (!newEmail) return alert("Por favor, digite o novo e-mail.");
+        if (!newEmail) {
+            alertModal("Atenção", "Por favor, digite o novo e-mail.", true);
+            return;
+        }
         
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(newEmail)) return alert("Por favor, digite um formato de e-mail válido.");
+        if (!emailRegex.test(newEmail)) {
+            alertModal("Atenção", "Por favor, digite um formato de e-mail válido.", true);
+            return;
+        }
 
         promptPasswordModal('Confirmar Identidade', 'Para alterar seu e-mail, informe sua senha atual:', false, async (currentPassword) => {
             try {
@@ -179,13 +198,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                     currentPassword: currentPassword || ""
                 });
                 
-                alert("E-mail atualizado com sucesso! (Verifique sua caixa de entrada)");
+                await alertModal("Sucesso", "E-mail atualizado com sucesso! (Verifique sua caixa de entrada)");
                 currentSavedEmail = response.user.email;
                 document.getElementById('user-email-display').innerText = currentSavedEmail;
                 document.getElementById('new-email-input').value = '';
                 btn.innerText = "Atualizar Email";
             } catch (error) {
-                alert(error.message);
+                alertModal("Erro", error.message, true);
                 document.getElementById('btn-update-email').innerText = "Atualizar Email";
             }
         });
@@ -195,9 +214,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('btn-update-password').addEventListener('click', () => {
         const newPassword = document.getElementById('new-password-input').value;
 
-        if (!newPassword) return alert("Por favor, digite a nova senha.");
+        if (!newPassword) {
+            alertModal("Atenção", "Por favor, digite a nova senha.", true);
+            return;
+        }
         
-        if (newPassword.length < 6) return alert("A nova senha deve ter pelo menos 6 caracteres.");
+        if (newPassword.length < 6) {
+            alertModal("Atenção", "A nova senha deve ter pelo menos 6 caracteres.", true);
+            return;
+        }
 
         promptPasswordModal('Confirmar Identidade', 'Para alterar sua senha, informe sua senha atual:', false, async (currentPassword) => {
             try {
@@ -210,11 +235,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                     currentPassword: currentPassword || ""
                 });
                 
-                alert("Senha alterada com sucesso!");
+                await alertModal("Sucesso", "Senha alterada com sucesso!");
                 document.getElementById('new-password-input').value = '';
                 btn.innerText = "Alterar Senha";
             } catch (error) {
-                alert(error.message);
+                alertModal("Erro", error.message, true);
                 document.getElementById('btn-update-password').innerText = "Alterar Senha";
             }
         });
@@ -226,11 +251,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             promptPasswordModal('Exclusão de Conta', 'Para confirmar a exclusão permanente, digite sua senha:', true, async (currentPassword) => {
                 try {
                     await apiFetch('/users/me', 'DELETE', { currentPassword: currentPassword || "" });
-                    alert("Sua conta foi excluída permanentemente. Até logo!");
+                    await alertModal("Conta Excluída", "Sua conta foi excluída permanentemente. Até logo!");
                     localStorage.removeItem('kanban_token');
                     window.location.href = 'login.html';
                 } catch (error) {
-                    alert(error.message);
+                    alertModal("Erro", error.message, true);
                 }
             });
         });
@@ -291,7 +316,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             
             btn.innerHTML = '<i class="fas fa-download"></i> Exportar JSON';
         } catch (error) {
-            alert("Erro ao exportar dados: " + error.message);
+            alertModal("Erro", "Erro ao exportar dados: " + error.message, true);
             document.getElementById('btn-export-data').innerHTML = '<i class="fas fa-download"></i> Exportar JSON';
         }
     });
