@@ -168,6 +168,36 @@ document.addEventListener('DOMContentLoaded', async () => {
             const formattedDate = date.toLocaleDateString('pt-BR');
             document.getElementById('stats-date').innerText = formattedDate;
         }
+
+        // ==========================================
+        // CARREGAMENTO DE PREFERÊNCIAS
+        // ==========================================
+        const preferences = await apiFetch('/users/me/preferences');
+        
+        // Garante valores padrão caso a API não retorne algo específico
+        const prefs = {
+            theme: preferences.theme || 'dark',
+            confirmBeforeDelete: preferences.confirmBeforeDelete ?? true,
+            soundEnabled: preferences.soundEnabled ?? false,
+            compactMode: preferences.compactMode ?? false,
+            newCardPosition: preferences.newCardPosition || 'bottom',
+            defaultColor: preferences.defaultColor || '#e6b905'
+        };
+
+        // Preenche a interface com os dados do banco
+        document.getElementById('pref-theme').checked = prefs.theme === 'dark';
+        document.getElementById('pref-confirm').checked = prefs.confirmBeforeDelete;
+        document.getElementById('pref-sound').checked = prefs.soundEnabled;
+        document.getElementById('pref-compact').checked = prefs.compactMode;
+        document.getElementById('pref-card-pos').value = prefs.newCardPosition;
+        document.getElementById('pref-color').value = prefs.defaultColor;
+
+        // Aplica o tema instantaneamente na tela de conta para refletir o banco de dados
+        if (prefs.theme === 'light') {
+            document.body.classList.add('light-mode');
+        } else {
+            document.body.classList.remove('light-mode');
+        }
         
     } catch (error) {
         alertModal("Erro", "Erro ao carregar os dados da conta: " + error.message, true);
@@ -261,27 +291,38 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     });
 
-    // 5. TEMA CLARO/ESCURO (Reutilizando sua lógica)
-    const themeToggle = document.getElementById('theme-toggle');
-    const savedTheme = localStorage.getItem('theme');
-    const systemPrefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
-
-    if (savedTheme === 'light' || (!savedTheme && systemPrefersLight)) {
-        document.body.classList.add('light-mode');
-        themeToggle.checked = false;
-    } else {
-        themeToggle.checked = true;
+    // ==========================================
+    // SALVAMENTO DE PREFERÊNCIAS (API)
+    // ==========================================
+    // Função genérica que atualiza uma única preferência de forma inteligente no banco
+    async function updatePreference(key, value) {
+        try {
+            await apiFetch('/users/me/preferences', 'PATCH', { [key]: value });
+            
+            // Tratamento especial para o tema (muda na hora e salva no localStorage para o carregamento inicial ser rápido)
+            if (key === 'theme') {
+                if (value === 'light') {
+                    document.body.classList.add('light-mode');
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    document.body.classList.remove('light-mode');
+                    localStorage.setItem('theme', 'dark');
+                }
+            }
+        } catch (error) {
+            console.error(`Erro ao salvar preferência ${key}:`, error);
+        }
     }
 
-    themeToggle.addEventListener('change', () => {
-        if (themeToggle.checked) {
-            document.body.classList.remove('light-mode');
-            localStorage.setItem('theme', 'dark');
-        } else {
-            document.body.classList.add('light-mode');
-            localStorage.setItem('theme', 'light');
-        }
-    });
+    // Escutadores de Evento: Disparam a atualização na API sempre que o usuário altera um valor
+    document.getElementById('pref-theme').addEventListener('change', (e) => updatePreference('theme', e.target.checked ? 'dark' : 'light'));
+    document.getElementById('pref-confirm').addEventListener('change', (e) => updatePreference('confirmBeforeDelete', e.target.checked));
+    document.getElementById('pref-sound').addEventListener('change', (e) => updatePreference('soundEnabled', e.target.checked));
+    document.getElementById('pref-compact').addEventListener('change', (e) => updatePreference('compactMode', e.target.checked));
+    document.getElementById('pref-card-pos').addEventListener('change', (e) => updatePreference('newCardPosition', e.target.value));
+    
+    // Para o input de cor, usamos 'change' em vez de 'input' para não sobrecarregar a API com chamadas enquanto o usuário arrasta o mouse
+    document.getElementById('pref-color').addEventListener('change', (e) => updatePreference('defaultColor', e.target.value));
 
     // ==========================================
     // EXPORTAÇÃO DE DADOS (DOWNLOAD JSON)

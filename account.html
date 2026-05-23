@@ -62,14 +62,51 @@
         <!-- Preferências -->
         <section class="settings-card">
             <h2><i class="fas fa-sliders-h"></i> Central de Preferências</h2>
+            
             <div class="preference-item">
                 <span>Modo Escuro</span>
                 <label class="switch">
-                    <input type="checkbox" id="theme-toggle">
+                    <input type="checkbox" id="pref-theme">
                     <span class="slider"></span>
                 </label>
             </div>
-            <p class="coming-soon-text">Mais funcionalidades em breve...</p>
+
+            <div class="preference-item">
+                <span>Exigir confirmação ao excluir</span>
+                <label class="switch">
+                    <input type="checkbox" id="pref-confirm">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div class="preference-item">
+                <span>Efeitos Sonoros</span>
+                <label class="switch">
+                    <input type="checkbox" id="pref-sound">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div class="preference-item">
+                <span>Visão Compacta</span>
+                <label class="switch">
+                    <input type="checkbox" id="pref-compact">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div class="preference-item">
+                <span>Posição de novos cards</span>
+                <select id="pref-card-pos" class="pref-input">
+                    <option value="bottom">No Fundo</option>
+                    <option value="top">No Topo</option>
+                </select>
+            </div>
+
+            <div class="preference-item">
+                <span>Cor padrão de novas colunas</span>
+                <input type="color" id="pref-color" class="pref-input pref-color-picker">
+            </div>
         </section>
 
         <!-- Estatísticas de Uso -->
