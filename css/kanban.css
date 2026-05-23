@@ -379,6 +379,7 @@ body {
 .menu-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 
 .menu-btn.logout:hover { color: #ec5f5b; }
+.menu-btn.account:hover { color: #e6b905; } /* Hover amarelo padrão do sistema */
 
 /* --- Switch de Tema --- */
 .theme-switch-row {

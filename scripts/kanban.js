@@ -630,8 +630,9 @@ document.getElementById('logout-btn').addEventListener('click', () => {
 });
 
 // 3.5 Navegação para a Conta
-document.getElementById('account-btn').addEventListener('click', () => {
-    window.location.href = 'account.html';
+document.getElementById('account-btn').addEventListener('click', (e) => {
+    e.preventDefault(); // Garante que não haja comportamento indesejado
+    window.location.assign('account.html'); // Força a navegação de forma limpa
 });
 
 // 4. Lógica de Tema Claro/Escuro
