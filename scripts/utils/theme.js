@@ -27,6 +27,11 @@ export function initTheme(toggleElementId, iconElementId = null) {
     applyTheme(isLightMode);
 
     if (themeBtn) {
+        // Define o estado visual inicial do switch (caso seja um checkbox)
+        if (themeBtn.type === 'checkbox') {
+            themeBtn.checked = !isLightMode;
+        }
+
         themeBtn.addEventListener('change', (e) => {
             const isLight = !e.target.checked;
             applyTheme(isLight);
