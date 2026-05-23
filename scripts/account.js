@@ -129,18 +129,21 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         // Evento do botão de Desvincular
-        unlinkBtn.addEventListener('click', async () => {
-            const currentPassword = document.getElementById('current-password-input').value;
-            
-            if (!confirm("Tem certeza que deseja desvincular sua conta do Google? Terá de usar o seu e-mail e senha local para entrar.")) return;
-
-            try {
-                await apiFetch('/users/me/unlink-google', 'POST', { currentPassword });
-                alert("Conta do Google desvinculada com sucesso! O seu acesso agora é 100% local.");
-                window.location.reload();
-            } catch (error) {
-                alert(error.message);
-            }
+        unlinkBtn.addEventListener('click', () => {
+            promptPasswordModal(
+                'Desvincular Conta', 
+                'Tem certeza que deseja desvincular sua conta do Google? Terá de usar o seu e-mail e senha local para entrar. Por favor, confirme digitando sua senha:', 
+                true, 
+                async (currentPassword) => {
+                    try {
+                        await apiFetch('/users/me/unlink-google', 'POST', { currentPassword: currentPassword || "" });
+                        alert("Conta do Google desvinculada com sucesso! O seu acesso agora é 100% local.");
+                        window.location.reload();
+                    } catch (error) {
+                        alert(error.message);
+                    }
+                }
+            );
         });
 
         // Busca Estatísticas
