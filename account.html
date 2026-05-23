@@ -45,13 +45,16 @@
 
         <!-- Contas Vinculadas -->
         <section class="settings-card">
-            <h2><i class="fas fa-link"></i>Contas Vinculadas (Em breve)</h2>
+            <h2><i class="fas fa-link"></i> Contas Vinculadas</h2>
             <div class="linked-account-item">
                 <div class="account-info">
                     <i class="fab fa-google"></i>
                     <span>Google</span>
                 </div>
-                <button class="btn-secondary">Desvincular</button>
+                <div id="google-status-container">
+                    <button id="btn-unlink-google" class="btn-secondary" style="display: none;">Desvincular</button>
+                    <div id="btn-link-google-wrapper" style="display: none;"></div>
+                </div>
             </div>
         </section>
 
@@ -90,8 +93,8 @@
         <!-- Exportação de Dados -->
         <section class="settings-card">
             <h2><i class="fas fa-file-export"></i> Exportar Dados</h2>
-            <p class="section-description">Faça o download de um backup contendo todas as suas colunas e cards.</p>
-            <button class="btn-secondary"><i class="fas fa-download"></i>Em breve</button>
+            <p class="section-description">Faça o download de um backup em formato JSON contendo todas as suas colunas e cards salvos.</p>
+            <button id="btn-export-data" class="btn-secondary"><i class="fas fa-download"></i> Exportar JSON</button>
         </section>
 
         <!-- Exclusão de Conta -->
@@ -103,4 +106,5 @@
     </div>
 </body>
 <script src="scripts/account.js"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 </html>

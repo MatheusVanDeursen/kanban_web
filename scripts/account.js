@@ -90,6 +90,58 @@ document.addEventListener('DOMContentLoaded', async () => {
         const user = await apiFetch('/users/me');
         currentSavedEmail = user.email;
         document.getElementById('user-email-display').innerText = user.email;
+        
+        // ==========================================
+        // GESTÃO DE VÍNCULO DO GOOGLE
+        // ==========================================
+        const unlinkBtn = document.getElementById('btn-unlink-google');
+        const linkWrapper = document.getElementById('btn-link-google-wrapper');
+
+        if (user.auth_provider === 'google') {
+            // Se a conta já é Google, permite desvincular
+            unlinkBtn.style.display = 'block';
+            linkWrapper.style.display = 'none';
+        } else {
+            // Se for local, exibe o botão para vincular
+            unlinkBtn.style.display = 'none';
+            linkWrapper.style.display = 'block';
+
+            // Inicializa o componente de autenticação do Google
+            google.accounts.id.initialize({
+                client_id: "SEU_GOOGLE_CLIENT_ID.apps.googleusercontent.com", // Substitua pelo seu Client ID do .env
+                callback: async (googleResponse) => {
+                    try {
+                        // Envia o token do Google para a nova rota protegida de vínculo
+                        await apiFetch('/users/me/link-google', 'POST', { token: googleResponse.credential });
+                        alert("Conta do Google vinculada com sucesso!");
+                        window.location.reload(); // Recarrega para atualizar o estado da tela
+                    } catch (err) {
+                        alert(err.message);
+                    }
+                }
+            });
+
+            // Renderiza o botão nativo do Google dentro da nossa div
+            google.accounts.id.renderButton(
+                linkWrapper,
+                { theme: "outline", size: "medium", text: "signin_with" }
+            );
+        }
+
+        // Evento do botão de Desvincular
+        unlinkBtn.addEventListener('click', async () => {
+            const currentPassword = document.getElementById('current-password-input').value;
+            
+            if (!confirm("Tem certeza que deseja desvincular sua conta do Google? Terá de usar o seu e-mail e senha local para entrar.")) return;
+
+            try {
+                await apiFetch('/users/me/unlink-google', 'POST', { currentPassword });
+                alert("Conta do Google desvinculada com sucesso! O seu acesso agora é 100% local.");
+                window.location.reload();
+            } catch (error) {
+                alert(error.message);
+            }
+        });
 
         // Busca Estatísticas
         const stats = await apiFetch('/users/me/stats');
@@ -195,4 +247,44 @@ document.addEventListener('DOMContentLoaded', async () => {
             localStorage.setItem('theme', 'dark');
         }
     });
+
+    // ==========================================
+    // EXPORTAÇÃO DE DADOS (DOWNLOAD JSON)
+    // ==========================================
+    document.getElementById('btn-export-data').addEventListener('click', async () => {
+        try {
+            const btn = document.getElementById('btn-export-data');
+            btn.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> Exportando...';
+
+            // Faz a requisição protegida para a API
+            const response = await fetch(`${API_URL}/users/me/export`, {
+                method: 'GET',
+                headers: { 'Authorization': `Bearer ${TOKEN}` }
+            });
+
+            if (!response.ok) throw new Error('Falha ao gerar o arquivo de exportação.');
+
+            // Transforma a resposta em um arquivo de download (Blob)
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            
+            // Cria um link invisível e simula o clique para iniciar o download
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `kanban_backup_${new Date().toISOString().slice(0,10)}.json`;
+            document.body.appendChild(a);
+            a.click();
+            
+            // Limpa a memória do navegador
+            a.remove();
+            window.URL.revokeObjectURL(url);
+            
+            btn.innerHTML = '<i class="fas fa-download"></i> Exportar JSON';
+        } catch (error) {
+            alert("Erro ao exportar dados: " + error.message);
+            document.getElementById('btn-export-data').innerHTML = '<i class="fas fa-download"></i> Exportar JSON';
+        }
+    });
+
+
 });
