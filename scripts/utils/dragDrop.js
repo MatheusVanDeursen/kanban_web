@@ -144,15 +144,36 @@ export function setupColumnDragEvents(col) {
     });
 }
 
+function getDragAfterColElement(container, x) {
+  const draggableElements = [...container.querySelectorAll('.col:not(.dragging-col):not(.add-column-col)')];
+  return draggableElements.reduce((closest, child) => {
+    const box = child.getBoundingClientRect();
+    const offset = x - box.left - box.width / 2;
+    if (offset < 0 && offset > closest.offset) return { offset: offset, element: child };
+    else return closest;
+  }, { offset: Number.NEGATIVE_INFINITY }).element;
+}
+
 export function setupMainContainerDragEvents(mainContainer) {
     mainContainer.addEventListener('dragenter', e => e.preventDefault());
     mainContainer.addEventListener('dragover', e => {
+        const draggingCol = document.querySelector('.dragging-col');
+        if (!draggingCol) return;
+        e.preventDefault();
+
         const threshold = 80, speed = 15;
         const rect = mainContainer.getBoundingClientRect();
         
         if (e.clientX - rect.left < threshold) mainContainer.scrollLeft -= speed; 
         else if (rect.right - e.clientX < threshold) mainContainer.scrollLeft += speed; 
         
-        // A reordenação de colunas continua na mesma lógica que já tínhamos (aqui resumida na API do dragDrop.js)
+        const afterElement = getDragAfterColElement(mainContainer, e.clientX);
+        const addColumnBtn = document.getElementById('add-column-btn');
+
+        if (afterElement == null) {
+            mainContainer.insertBefore(draggingCol, addColumnBtn);
+        } else {
+            mainContainer.insertBefore(draggingCol, afterElement);
+        }
     });
 }
