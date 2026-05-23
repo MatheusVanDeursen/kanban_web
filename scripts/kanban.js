@@ -645,17 +645,19 @@ const systemPrefersLight = window.matchMedia('(prefers-color-scheme: light)').ma
 // 2. Aplica o tema inicial (Prioridade: 1º LocalStorage, 2º Sistema)
 if (savedTheme === 'light' || (!savedTheme && systemPrefersLight)) {
     document.body.classList.add('light-mode');
-    themeToggle.checked = true;
+    themeToggle.checked = false; // Chave desligada = Modo Claro
+} else {
+    themeToggle.checked = true;  // Chave ligada = Modo Escuro
 }
 
 // 3. Lida com a mudança manual no botão
 themeToggle.addEventListener('change', () => {
     if (themeToggle.checked) {
-        document.body.classList.add('light-mode');
-        localStorage.setItem('theme', 'light');
-    } else {
         document.body.classList.remove('light-mode');
         localStorage.setItem('theme', 'dark');
+    } else {
+        document.body.classList.add('light-mode');
+        localStorage.setItem('theme', 'light');
     }
     
     // Força o autoResize para ajustar os textareas no novo tema
@@ -668,10 +670,10 @@ window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', (e
     if (!localStorage.getItem('theme')) {
         if (e.matches) {
             document.body.classList.add('light-mode');
-            themeToggle.checked = true;
+            themeToggle.checked = false;
         } else {
             document.body.classList.remove('light-mode');
-            themeToggle.checked = false;
+            themeToggle.checked = true;
         }
     }
 });

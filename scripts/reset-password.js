@@ -26,10 +26,10 @@ const systemPrefersLight = window.matchMedia('(prefers-color-scheme: light)').ma
 function applyTheme(isLight) {
     if (isLight) {
         document.body.classList.add('light-mode');
-        themeIcon.classList.replace('fa-sun', 'fa-moon');
+        themeIcon.classList.replace('fa-moon', 'fa-sun');
     } else {
         document.body.classList.remove('light-mode');
-        themeIcon.classList.replace('fa-moon', 'fa-sun');
+        themeIcon.classList.replace('fa-sun', 'fa-moon');
     }
 }
 
@@ -39,8 +39,8 @@ if (savedTheme === 'light' || (!savedTheme && systemPrefersLight)) {
 
 themeBtn.addEventListener('click', () => {
     const isLight = document.body.classList.toggle('light-mode');
-    themeIcon.classList.toggle('fa-sun', !isLight);
-    themeIcon.classList.toggle('fa-moon', isLight);
+    themeIcon.classList.toggle('fa-moon', !isLight);
+    themeIcon.classList.toggle('fa-sun', isLight);
     localStorage.setItem('theme', isLight ? 'light' : 'dark');
 });
 

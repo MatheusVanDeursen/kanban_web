@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const user = await apiFetch('/users/me');
         currentSavedEmail = user.email;
         document.getElementById('user-email-display').innerText = user.email;
-        
+
         // ==========================================
         // GESTÃO DE VÍNCULO DO GOOGLE
         // ==========================================
@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             // Inicializa o componente de autenticação do Google
             google.accounts.id.initialize({
-                client_id: "SEU_GOOGLE_CLIENT_ID.apps.googleusercontent.com", // Substitua pelo seu Client ID do .env
+                client_id: "628971780221-ootclb01igm7r0fej0nqssvd2olurclj.apps.googleusercontent.com",
                 callback: async (googleResponse) => {
                     try {
                         // Envia o token do Google para a nova rota protegida de vínculo
@@ -162,6 +162,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         const newEmail = document.getElementById('new-email-input').value;
 
         if (!newEmail) return alert("Por favor, digite o novo e-mail.");
+        
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(newEmail)) return alert("Por favor, digite um formato de e-mail válido.");
 
         promptPasswordModal('Confirmar Identidade', 'Para alterar seu e-mail, informe sua senha atual:', false, async (currentPassword) => {
             try {
@@ -190,6 +193,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         const newPassword = document.getElementById('new-password-input').value;
 
         if (!newPassword) return alert("Por favor, digite a nova senha.");
+        
+        if (newPassword.length < 6) return alert("A nova senha deve ter pelo menos 6 caracteres.");
 
         promptPasswordModal('Confirmar Identidade', 'Para alterar sua senha, informe sua senha atual:', false, async (currentPassword) => {
             try {
@@ -235,16 +240,18 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (savedTheme === 'light' || (!savedTheme && systemPrefersLight)) {
         document.body.classList.add('light-mode');
+        themeToggle.checked = false;
+    } else {
         themeToggle.checked = true;
     }
 
     themeToggle.addEventListener('change', () => {
         if (themeToggle.checked) {
-            document.body.classList.add('light-mode');
-            localStorage.setItem('theme', 'light');
-        } else {
             document.body.classList.remove('light-mode');
             localStorage.setItem('theme', 'dark');
+        } else {
+            document.body.classList.add('light-mode');
+            localStorage.setItem('theme', 'light');
         }
     });
 

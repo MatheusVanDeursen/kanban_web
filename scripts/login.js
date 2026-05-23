@@ -29,12 +29,12 @@ const systemPrefersLight = window.matchMedia('(prefers-color-scheme: light)').ma
 function applyTheme(isLight) {
     if (isLight) {
         document.body.classList.add('light-mode');
-        themeIcon.classList.remove('fa-sun');
-        themeIcon.classList.add('fa-moon');
-    } else {
-        document.body.classList.remove('light-mode');
         themeIcon.classList.remove('fa-moon');
         themeIcon.classList.add('fa-sun');
+    } else {
+        document.body.classList.remove('light-mode');
+        themeIcon.classList.remove('fa-sun');
+        themeIcon.classList.add('fa-moon');
     }
     
     // Re-renderiza o botão do Google com a cor certa, caso a função já esteja disponível
