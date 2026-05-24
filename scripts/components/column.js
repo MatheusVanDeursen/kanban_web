@@ -2,11 +2,12 @@ import { kanbanFetch } from '../api/kanbanFetch.js';
 import { createCardElement, setupTextarea } from './card.js';
 import { setupColumnDragEvents, setupContainerEvents } from '../utils/dragDrop.js';
 
-export function createColumnElement(colData) {
+export function createColumnElement(colData, preferences = {}) {
     const col = document.createElement('div');
     col.classList.add('col');
     col.dataset.colId = colData.id;
     col.dataset.position = colData.position;
+    const prefs = { confirmBeforeDelete: true, newCardPosition: 'bottom', ...preferences };
 
     col.innerHTML = `
         <div class="title">
@@ -32,12 +33,18 @@ export function createColumnElement(colData) {
         const color = col.querySelector('.col-color-picker').value;
         const newCardData = await kanbanFetch('/cards', 'POST', { column_id: col.dataset.colId, title: '', content: '' });
         const newCard = createCardElement(newCardData, color);
-        col.querySelector('.content').appendChild(newCard);
+        const content = col.querySelector('.content');
+        
+        if (prefs.newCardPosition === 'top' && content.firstChild) {
+            content.insertBefore(newCard, content.firstChild);
+        } else {
+            content.appendChild(newCard);
+        }
     });
 
     col.querySelector('.delete-col-btn').addEventListener('click', async () => {
         const hasCards = col.querySelectorAll('.card').length > 0;
-        if (hasCards) {
+        if (hasCards && prefs.confirmBeforeDelete) {
             showCustomConfirm(col, async () => {
                 await kanbanFetch(`/columns/${col.dataset.colId}`, 'DELETE');
                 col.remove();

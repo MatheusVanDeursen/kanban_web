@@ -9,6 +9,8 @@ import { initDragDropPolyfill, setupMainContainerDragEvents } from '../utils/dra
 if (!getToken()) window.location.href = 'login.html';
 
 let defaultColumnColor = '#e6b905';
+let confirmBeforeDelete = true;
+let newCardPosition = 'bottom';
 
 initDragDropPolyfill();
 initTheme('theme-toggle', null, (theme) => {
@@ -32,7 +34,7 @@ async function loadBoard() {
         addColBtn.innerHTML = '<span>+ Nova Coluna</span>';
         
         columns.forEach(colData => {
-            const colElement = createColumnElement(colData);
+            const colElement = createColumnElement(colData, { confirmBeforeDelete, newCardPosition });
             container.appendChild(colElement);
             
             colData.cards.forEach(cardData => {
@@ -45,7 +47,7 @@ async function loadBoard() {
         
         addColBtn.onclick = async () => {
             const newColData = await kanbanFetch('/columns', 'POST', { title: 'Nova Coluna', color: defaultColumnColor });
-            const colElement = createColumnElement(newColData);
+            const colElement = createColumnElement(newColData, { confirmBeforeDelete, newCardPosition });
             addColBtn.parentNode.insertBefore(colElement, addColBtn);
         };
 
@@ -91,6 +93,12 @@ kanbanFetch('/users/me/preferences').then(prefs => {
     }
     if (prefs && prefs.defaultColor) {
         defaultColumnColor = prefs.defaultColor;
+    }
+    if (prefs && prefs.confirmBeforeDelete !== undefined) {
+        confirmBeforeDelete = prefs.confirmBeforeDelete;
+    }
+    if (prefs && prefs.newCardPosition) {
+        newCardPosition = prefs.newCardPosition;
     }
 }).catch(() => console.error("Erro ao buscar preferências"));
 
