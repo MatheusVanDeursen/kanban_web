@@ -8,6 +8,8 @@ import { initDragDropPolyfill, setupMainContainerDragEvents } from '../utils/dra
 
 if (!getToken()) window.location.href = 'login.html';
 
+let defaultColumnColor = '#e6b905';
+
 initDragDropPolyfill();
 initTheme('theme-toggle', null, (theme) => {
     kanbanFetch('/users/me/preferences', 'PATCH', { theme }).catch(e => console.error("Erro ao salvar tema:", e));
@@ -42,7 +44,7 @@ async function loadBoard() {
         container.appendChild(addColBtn);
         
         addColBtn.onclick = async () => {
-            const newColData = await kanbanFetch('/columns', 'POST', { title: 'Nova Coluna', color: '#e6b905' });
+            const newColData = await kanbanFetch('/columns', 'POST', { title: 'Nova Coluna', color: defaultColumnColor });
             const colElement = createColumnElement(newColData);
             addColBtn.parentNode.insertBefore(colElement, addColBtn);
         };
@@ -86,6 +88,9 @@ kanbanFetch('/users/me/preferences').then(prefs => {
         if (themeBtn && themeBtn.type === 'checkbox') {
             themeBtn.checked = !isLight;
         }
+    }
+    if (prefs && prefs.defaultColor) {
+        defaultColumnColor = prefs.defaultColor;
     }
 }).catch(() => console.error("Erro ao buscar preferências"));
 
