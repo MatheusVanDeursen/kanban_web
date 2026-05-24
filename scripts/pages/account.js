@@ -206,8 +206,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Aplica o tema instantaneamente na tela de conta para refletir o banco de dados
         if (prefs.theme === 'light') {
             document.body.classList.add('light-mode');
+            localStorage.setItem('theme', 'light');
         } else {
             document.body.classList.remove('light-mode');
+            localStorage.setItem('theme', 'dark');
         }
         
     } catch (error) {

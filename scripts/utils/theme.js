@@ -1,4 +1,4 @@
-export function initTheme(toggleElementId, iconElementId = null) {
+export function initTheme(toggleElementId, iconElementId = null, onThemeChange = null) {
     const themeBtn = document.getElementById(toggleElementId);
     const themeIcon = iconElementId ? document.querySelector(iconElementId) : (themeBtn ? themeBtn.querySelector('i') : null);
     
@@ -36,6 +36,7 @@ export function initTheme(toggleElementId, iconElementId = null) {
             const isLight = !e.target.checked;
             applyTheme(isLight);
             localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            if (onThemeChange) onThemeChange(isLight ? 'light' : 'dark');
         });
         
         themeBtn.addEventListener('click', (e) => {
@@ -43,6 +44,7 @@ export function initTheme(toggleElementId, iconElementId = null) {
             isLightMode = !document.body.classList.contains('light-mode');
             applyTheme(isLightMode);
             localStorage.setItem('theme', isLightMode ? 'light' : 'dark');
+            if (onThemeChange) onThemeChange(isLightMode ? 'light' : 'dark');
         });
     }
 }

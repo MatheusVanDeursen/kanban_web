@@ -9,7 +9,9 @@ import { initDragDropPolyfill, setupMainContainerDragEvents } from '../utils/dra
 if (!getToken()) window.location.href = 'login.html';
 
 initDragDropPolyfill();
-initTheme('theme-toggle');
+initTheme('theme-toggle', null, (theme) => {
+    kanbanFetch('/users/me/preferences', 'PATCH', { theme }).catch(e => console.error("Erro ao salvar tema:", e));
+});
 document.addEventListener('DOMContentLoaded', loadBoard);
 
 async function loadBoard() {
@@ -70,6 +72,22 @@ settingsMenu.addEventListener('click', (e) => e.stopPropagation());
 kanbanFetch('/users/me').then(userData => {
     document.getElementById('display-email').innerText = userData.email;
 }).catch(() => console.error("Erro ao buscar dados do usuário"));
+
+kanbanFetch('/users/me/preferences').then(prefs => {
+    if (prefs && prefs.theme) {
+        const isLight = prefs.theme === 'light';
+        localStorage.setItem('theme', prefs.theme);
+        if (isLight) {
+            document.body.classList.add('light-mode');
+        } else {
+            document.body.classList.remove('light-mode');
+        }
+        const themeBtn = document.getElementById('theme-toggle');
+        if (themeBtn && themeBtn.type === 'checkbox') {
+            themeBtn.checked = !isLight;
+        }
+    }
+}).catch(() => console.error("Erro ao buscar preferências"));
 
 document.getElementById('logout-btn').addEventListener('click', () => {
     removeToken(); window.location.href = 'login.html';
