@@ -2,7 +2,7 @@
 const soundFiles = {
     pick: ['drag.wav'],
     drop: ['drop.wav', 'drop.aiff'],
-    create: ['menu_click.wav', 'menu_click.mp3'],
+    create: ['menu_click.wav'],
     loaded: ['loaded_board.wav'],
     switch: ['switch.wav'],
     trash_card: ['card_thrash.wav'],
