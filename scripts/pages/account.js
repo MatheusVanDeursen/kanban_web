@@ -1,6 +1,9 @@
 const API_URL = 'https://api-kanban.matheusvandeursen.com/api';
 const TOKEN = localStorage.getItem('kanban_token');
 
+// Importa o gerenciador de áudio
+import { setSoundEnabled } from '../utils/audioManager.js';
+
 // Redireciona se não estiver logado
 if (!TOKEN) {
     window.location.href = 'login.html';
@@ -321,6 +324,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                     document.body.classList.remove('light-mode');
                     localStorage.setItem('theme', 'dark');
                 }
+            }
+            
+            // Sincroniza a preferência de som com o audioManager
+            if (key === 'soundEnabled') {
+                setSoundEnabled(value);
             }
         } catch (error) {
             console.error(`Erro ao salvar preferência ${key}:`, error);

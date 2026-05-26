@@ -1,5 +1,6 @@
 import { kanbanFetch } from '../api/kanbanFetch.js';
 import { setupCardDragEvents } from '../utils/dragDrop.js';
+import { playSound } from '../utils/audioManager.js';
 
 export function createCardElement(cardData, columnColor) {
     const card = document.createElement('div');
@@ -18,6 +19,7 @@ export function createCardElement(cardData, columnColor) {
     setupCardDragEvents(card);
     
     card.querySelector('.delete-card-btn').addEventListener('click', async () => {
+        playSound('trash');
         await kanbanFetch(`/cards/${card.dataset.cardId}`, 'DELETE');
         card.remove();
     });

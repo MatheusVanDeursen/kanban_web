@@ -1,4 +1,5 @@
 import { kanbanFetch } from '../api/kanbanFetch.js';
+import { playSound } from './audioManager.js';
 
 export function initDragDropPolyfill() {
     if (window.MobileDragDrop) {
@@ -15,6 +16,7 @@ export function setupCardDragEvents(card) {
     let originalColId = null, originalPosition = null, originalNextSibling = null, originalIndex = null;
 
     card.addEventListener('dragstart', () => {
+        playSound('pick');
         card.classList.add('dragging-card');
         const currentCol = card.closest('.col');
         originalColId = currentCol.dataset.colId;
@@ -37,6 +39,7 @@ export function setupCardDragEvents(card) {
 
         if (col.dataset.colId === originalColId && currentIndex === originalIndex) return; 
 
+        playSound('drop');
         card.style.borderTopColor = col.querySelector('.col-color-picker').value;
 
         let newPos = 1.0;
@@ -104,6 +107,7 @@ export function setupColumnDragEvents(col) {
     
     col.addEventListener('dragstart', (e) => { 
         if(e.target === col) {
+            playSound('pick');
             col.classList.add('dragging-col'); 
             originalNextSibling = col.nextElementSibling;
             originalPosition = col.dataset.position;
@@ -122,7 +126,7 @@ export function setupColumnDragEvents(col) {
 
         if (currentIndex === originalIndex) return;
         
-        let newPos = 1.0;
+        playSound('toggle');
         if (columnsInBoard.length > 1) {
             if (currentIndex === 0) newPos = parseFloat(columnsInBoard[1].dataset.position) / 2;
             else if (currentIndex === columnsInBoard.length - 1) newPos = parseFloat(columnsInBoard[currentIndex - 1].dataset.position) + 1.0;

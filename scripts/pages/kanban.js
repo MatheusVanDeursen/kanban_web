@@ -5,6 +5,7 @@ import { initTheme } from '../utils/theme.js';
 import { createColumnElement } from '../components/column.js';
 import { createCardElement } from '../components/card.js';
 import { initDragDropPolyfill, setupMainContainerDragEvents } from '../utils/dragDrop.js';
+import { setSoundEnabled, preloadSounds, playSound } from '../utils/audioManager.js';
 
 if (!getToken()) window.location.href = 'login.html';
 
@@ -13,6 +14,7 @@ let confirmBeforeDelete = true;
 let newCardPosition = 'bottom';
 
 initDragDropPolyfill();
+preloadSounds();
 initTheme('theme-toggle', null, (theme) => {
     kanbanFetch('/users/me/preferences', 'PATCH', { theme }).catch(e => console.error("Erro ao salvar tema:", e));
 });
@@ -46,6 +48,7 @@ async function loadBoard() {
         container.appendChild(addColBtn);
         
         addColBtn.onclick = async () => {
+            playSound('success');
             const newColData = await kanbanFetch('/columns', 'POST', { title: 'Nova Coluna', color: defaultColumnColor });
             const colElement = createColumnElement(newColData, { confirmBeforeDelete, newCardPosition });
             addColBtn.parentNode.insertBefore(colElement, addColBtn);
@@ -99,6 +102,9 @@ kanbanFetch('/users/me/preferences').then(prefs => {
     }
     if (prefs && prefs.newCardPosition) {
         newCardPosition = prefs.newCardPosition;
+    }
+    if (prefs && prefs.soundEnabled !== undefined) {
+        setSoundEnabled(prefs.soundEnabled);
     }
 }).catch(() => console.error("Erro ao buscar preferências"));
 
