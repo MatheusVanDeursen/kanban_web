@@ -126,7 +126,8 @@ export function setupColumnDragEvents(col) {
 
         if (currentIndex === originalIndex) return;
         
-        playSound('toggle');
+        playSound('drop');
+        let newPos = 1.0;
         if (columnsInBoard.length > 1) {
             if (currentIndex === 0) newPos = parseFloat(columnsInBoard[1].dataset.position) / 2;
             else if (currentIndex === columnsInBoard.length - 1) newPos = parseFloat(columnsInBoard[currentIndex - 1].dataset.position) + 1.0;

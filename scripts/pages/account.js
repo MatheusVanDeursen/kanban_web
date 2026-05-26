@@ -2,7 +2,7 @@ const API_URL = 'https://api-kanban.matheusvandeursen.com/api';
 const TOKEN = localStorage.getItem('kanban_token');
 
 // Importa o gerenciador de áudio
-import { setSoundEnabled } from '../utils/audioManager.js';
+import { setSoundEnabled, playSound } from '../utils/audioManager.js';
 
 // Redireciona se não estiver logado
 if (!TOKEN) {
@@ -338,33 +338,39 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Escutadores de Evento: Disparam a atualização na API sempre que o usuário altera um valor
     const prefThemeEl = document.getElementById('pref-theme');
     if (prefThemeEl) {
-        prefThemeEl.addEventListener('change', (e) => updatePreference('theme', e.target.checked ? 'dark' : 'light'));
+        prefThemeEl.addEventListener('change', (e) => {
+            updatePreference('theme', e.target.checked ? 'dark' : 'light');
+            playSound('switch');
+        });
     }
 
     const prefConfirmEl = document.getElementById('pref-confirm');
     if (prefConfirmEl) {
-        prefConfirmEl.addEventListener('change', (e) => updatePreference('confirmBeforeDelete', e.target.checked));
+        prefConfirmEl.addEventListener('change', (e) => { updatePreference('confirmBeforeDelete', e.target.checked); playSound('switch'); });
     }
 
     const prefSoundEl = document.getElementById('pref-sound');
     if (prefSoundEl) {
-        prefSoundEl.addEventListener('change', (e) => updatePreference('soundEnabled', e.target.checked));
+        prefSoundEl.addEventListener('change', (e) => {
+            // Salva a preferência e, se estiver ativando, toca o som de confirmação
+            updatePreference('soundEnabled', e.target.checked).then(() => { if (e.target.checked) playSound('switch'); });
+        });
     }
 
     const prefCompactEl = document.getElementById('pref-compact');
     if (prefCompactEl) {
-        prefCompactEl.addEventListener('change', (e) => updatePreference('compactMode', e.target.checked));
+        prefCompactEl.addEventListener('change', (e) => { updatePreference('compactMode', e.target.checked); playSound('switch'); });
     }
 
     const prefCardPosEl = document.getElementById('pref-card-pos');
     if (prefCardPosEl) {
-        prefCardPosEl.addEventListener('change', (e) => updatePreference('newCardPosition', e.target.value));
+        prefCardPosEl.addEventListener('change', (e) => { updatePreference('newCardPosition', e.target.value); playSound('switch'); });
     }
     
     // Para o input de cor, usamos 'change' em vez de 'input' para não sobrecarregar a API com chamadas enquanto o usuário arrasta o mouse
     const prefColorEl = document.getElementById('pref-color');
     if (prefColorEl) {
-        prefColorEl.addEventListener('change', (e) => updatePreference('defaultColor', e.target.value));
+        prefColorEl.addEventListener('change', (e) => { updatePreference('defaultColor', e.target.value); playSound('switch'); });
     }
 
     // ==========================================

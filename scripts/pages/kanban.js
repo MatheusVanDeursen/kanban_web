@@ -48,13 +48,14 @@ async function loadBoard() {
         container.appendChild(addColBtn);
         
         addColBtn.onclick = async () => {
-            playSound('success');
+            playSound('create');
             const newColData = await kanbanFetch('/columns', 'POST', { title: 'Nova Coluna', color: defaultColumnColor });
             const colElement = createColumnElement(newColData, { confirmBeforeDelete, newCardPosition });
             addColBtn.parentNode.insertBefore(colElement, addColBtn);
         };
 
         updateSyncStatus('saved', 'Quadro carregado');
+        playSound('loaded');
     } catch (error) {
         updateSyncStatus('error', 'Falha na conexão');
         container.innerHTML = `

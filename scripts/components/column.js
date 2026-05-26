@@ -31,7 +31,7 @@ export function createColumnElement(colData, preferences = {}) {
     });
 
     col.querySelector('.add-card-btn').addEventListener('click', async () => {
-        playSound('success');
+        playSound('create');
         const color = col.querySelector('.col-color-picker').value;
         const newCardData = await kanbanFetch('/cards', 'POST', { column_id: col.dataset.colId, title: '', content: '' });
         const newCard = createCardElement(newCardData, color);
@@ -48,12 +48,12 @@ export function createColumnElement(colData, preferences = {}) {
         const hasCards = col.querySelectorAll('.card').length > 0;
         if (hasCards && prefs.confirmBeforeDelete) {
             showCustomConfirm(col, async () => {
-                playSound('trash');
+                playSound('trash_column');
                 await kanbanFetch(`/columns/${col.dataset.colId}`, 'DELETE');
                 col.remove();
             });
         } else {
-            playSound('trash');
+            playSound('trash_column');
             await kanbanFetch(`/columns/${col.dataset.colId}`, 'DELETE');
             col.remove();
         }

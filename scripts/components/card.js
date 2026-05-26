@@ -19,7 +19,7 @@ export function createCardElement(cardData, columnColor) {
     setupCardDragEvents(card);
     
     card.querySelector('.delete-card-btn').addEventListener('click', async () => {
-        playSound('trash');
+        playSound('trash_card');
         await kanbanFetch(`/cards/${card.dataset.cardId}`, 'DELETE');
         card.remove();
     });

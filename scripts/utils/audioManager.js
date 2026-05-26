@@ -1,14 +1,55 @@
-// Objeto que guarda as instâncias de áudio pré-carregadas para tocarem sem atraso
-const sounds = {
-    pick: new Audio('assets/sounds/drag.wav'),
-    drop: new Audio('assets/sounds/drop.aiff'),
-    success: new Audio('assets/sounds/loaded_board.wav'),
-    toggle: new Audio('assets/sounds/switch.wav'),
-    trash: new Audio('assets/sounds/card_thrash.wav')
+// Mapeamento lógico -> possíveis arquivos (ordem de preferência)
+const soundFiles = {
+    pick: ['drag.wav'],
+    drop: ['drop.wav', 'drop.aiff'],
+    create: ['menu_click.wav', 'menu_click.mp3'],
+    loaded: ['loaded_board.wav'],
+    switch: ['switch.wav'],
+    trash_card: ['card_thrash.wav'],
+    trash_column: ['column_thrash.wav']
 };
 
+const basePath = 'assets/sounds/';
+
+// Construímos os objetos de áudio apenas para arquivos que provavelmente funcionem
+const sounds = {};
+
+function canPlayExtension(ext) {
+    const test = document.createElement('audio');
+    if (!test.canPlayType) return true; // assume que funciona
+    ext = ext.toLowerCase();
+    if (ext.endsWith('.mp3')) return !!test.canPlayType('audio/mpeg');
+    if (ext.endsWith('.wav')) return !!test.canPlayType('audio/wav');
+    if (ext.endsWith('.ogg')) return !!test.canPlayType('audio/ogg; codecs="vorbis"');
+    if (ext.endsWith('.aac') || ext.endsWith('.m4a')) return !!test.canPlayType('audio/aac');
+    if (ext.endsWith('.aiff') || ext.endsWith('.aif')) return !!(test.canPlayType('audio/aiff') || test.canPlayType('audio/x-aiff'));
+    return true;
+}
+
+function createAudioFor(name) {
+    const candidates = soundFiles[name] || [];
+    for (const file of candidates) {
+        if (!canPlayExtension(file)) continue;
+        const audio = new Audio(basePath + file);
+        audio.volume = 0.5;
+        return audio;
+    }
+    // Fallback: try to create audio from first candidate anyway
+    if (candidates.length) {
+        const audio = new Audio(basePath + candidates[0]);
+        audio.volume = 0.5;
+        return audio;
+    }
+    return null;
+}
+
+Object.keys(soundFiles).forEach(key => {
+    const audio = createAudioFor(key);
+    if (audio) sounds[key] = audio;
+});
+
 // Ajusta o volume para não assustar o usuário (0.0 a 1.0)
-Object.values(sounds).forEach(audio => audio.volume = 0.5);
+Object.values(sounds).forEach(audio => { if (audio) audio.volume = 0.5; });
 
 // Armazena o estado de áudio habilitado
 let soundEnabled = localStorage.getItem('pref_sound') === 'true';
@@ -32,18 +73,19 @@ export function isSoundEnabled() {
 
 /**
  * Toca um som específico
- * @param {string} soundName - Nome do som (pick, drop, success, toggle, trash)
+ * @param {string} soundName - Nome do som lógico (pick, drop, create, loaded, switch, trash_card, trash_column)
  */
 export function playSound(soundName) {
-    // 1. O gerenciador de áudio pergunta: "O usuário ativou o som?"
-    if (!soundEnabled || !sounds[soundName]) return;
-
-    // 2. Toca o som (o currentTime = 0 permite que o som toque várias vezes seguidas rápido, como mover vários cards)
-    sounds[soundName].currentTime = 0;
-    sounds[soundName].play().catch(err => {
-        // Ignora erros caso o navegador bloqueie o autoplay antes do usuário interagir com a página
-        console.warn('Áudio bloqueado pelo navegador:', err);
-    });
+    if (!soundEnabled) return;
+    const audio = sounds[soundName];
+    if (!audio) return;
+    try {
+        audio.currentTime = 0;
+        const p = audio.play();
+        if (p && p.catch) p.catch(() => {});
+    } catch (err) {
+        console.warn('Erro ao tocar som', soundName, err);
+    }
 }
 
 /**
@@ -51,6 +93,6 @@ export function playSound(soundName) {
  */
 export function preloadSounds() {
     Object.values(sounds).forEach(audio => {
-        audio.load();
+        if (audio && audio.load) audio.load();
     });
 }
