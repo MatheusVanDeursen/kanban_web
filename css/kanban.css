@@ -296,7 +296,84 @@ body {
     font-weight: normal;
 }
 
-/* Scrollbars estilizadas combinando com a cor dos cartões */
+/* --- Modo Compacto --- */
+body.compact-mode .container {
+    padding: 10px;
+    gap: 10px;
+}
+
+body.compact-mode .col {
+    padding: 12px;
+    width: 260px;
+    border-radius: 16px;
+}
+
+body.compact-mode .title {
+    padding-bottom: 8px;
+    margin-bottom: 6px;
+    gap: 6px;
+}
+
+body.compact-mode .col-title {
+    font-size: 1.1em;
+    min-height: 22px;
+}
+
+body.compact-mode .col-drag-handle {
+    font-size: 1.2em;
+}
+
+body.compact-mode .delete-col-btn {
+    font-size: 16px;
+}
+
+body.compact-mode .col-color-picker {
+    width: 18px;
+    height: 18px;
+}
+
+body.compact-mode .add-card-btn {
+    padding: 6px;
+    margin-top: 10px;
+    font-size: 1.2em;
+}
+
+body.compact-mode .content {
+    gap: 12px;
+    padding: 6px 3px;
+}
+
+body.compact-mode .card {
+    border-top: 20px solid #e6b905;
+    padding: 10px;
+    width: 220px;
+    min-height: 100px;
+}
+
+body.compact-mode .card-title {
+    margin: 0 0 6px 0;
+    font-size: 0.95em;
+    min-height: 20px;
+}
+
+body.compact-mode .card-content {
+    font-size: 12px;
+    min-height: 20px;
+}
+
+body.compact-mode .delete-card-btn {
+    height: 22px;
+    line-height: 22px;
+    padding: 0 6px;
+    font-size: larger;
+}
+
+body.compact-mode .add-column-col span {
+    font-size: 1.2em;
+}
+
+/* --- Scrollbars estilizadas combinando com a cor dos cartões */
+
 ::-webkit-scrollbar {
     width: 8px;
     height: 8px;

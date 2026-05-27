@@ -215,6 +215,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             localStorage.setItem('theme', 'dark');
         }
         
+        // Aplica o modo compacto instantaneamente na tela de conta
+        if (prefs.compactMode) {
+            document.body.classList.add('compact-mode');
+        } else {
+            document.body.classList.remove('compact-mode');
+        }
+        
     } catch (error) {
         alertModal("Erro", "Erro ao carregar os dados da conta: " + error.message, true);
     }
@@ -329,6 +336,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             // Sincroniza a preferência de som com o audioManager
             if (key === 'soundEnabled') {
                 setSoundEnabled(value);
+            }
+            
+            // Aplicar modo compacto em tempo real
+            if (key === 'compactMode') {
+                if (value) {
+                    document.body.classList.add('compact-mode');
+                } else {
+                    document.body.classList.remove('compact-mode');
+                }
             }
         } catch (error) {
             console.error(`Erro ao salvar preferência ${key}:`, error);

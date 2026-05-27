@@ -288,6 +288,58 @@ button {
     to { transform: translate(-50%, -50%) scale(1); opacity: 1; } 
 }
 
+/* --- Modo Compacto --- */
+body.compact-mode {
+    padding: 20px 15px;
+}
+
+body.compact-mode .account-container {
+    max-width: 700px;
+}
+
+body.compact-mode .account-header {
+    margin-bottom: 25px;
+}
+
+body.compact-mode .account-header h1 {
+    font-size: 1.8em;
+}
+
+body.compact-mode .settings-card {
+    padding: 20px;
+    margin-bottom: 18px;
+    border-radius: 12px;
+}
+
+body.compact-mode .settings-card h2 {
+    font-size: 1.1em;
+    margin-bottom: 15px;
+}
+
+body.compact-mode .preference-item {
+    padding: 10px 0;
+}
+
+body.compact-mode .input-group {
+    margin-bottom: 18px;
+}
+
+body.compact-mode .action-row {
+    gap: 8px;
+}
+
+body.compact-mode .btn-primary, 
+body.compact-mode .btn-secondary,
+body.compact-mode .btn-danger {
+    padding: 8px 12px;
+    font-size: 0.9em;
+}
+
+body.compact-mode .pref-input {
+    padding: 8px 10px;
+    font-size: 0.9em;
+}
+
 /* Responsividade (Mobile) */
 @media (max-width: 600px) {
     .action-row { flex-direction: column; align-items: stretch; }

@@ -107,6 +107,13 @@ kanbanFetch('/users/me/preferences').then(prefs => {
     if (prefs && prefs.soundEnabled !== undefined) {
         setSoundEnabled(prefs.soundEnabled);
     }
+    if (prefs && prefs.compactMode !== undefined) {
+        if (prefs.compactMode) {
+            document.body.classList.add('compact-mode');
+        } else {
+            document.body.classList.remove('compact-mode');
+        }
+    }
 }).catch(() => console.error("Erro ao buscar preferências"));
 
 document.getElementById('logout-btn').addEventListener('click', () => {
