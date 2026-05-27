@@ -115,12 +115,85 @@ As comunicações transacionais do sistema são disparadas pelo **backend (Kanba
 Do lado do front-end, a arquitetura foca em gerenciar o estado da interface e o roteamento de forma fluida durante esses eventos:
 
 - **Boas-vindas (Cadastro):** A UI coleta as credenciais, consome o endpoint de registro e trata o feedback visual de sucesso (ou alertas de conflito, caso o e-mail já exista). O disparo do e-mail de boas-vindas ocorre em segundo plano pela API.
-- **Recuperação de Senha:** - **Solicitação:** A interface disponibiliza o formulário de resgate e exibe feedbacks neutros de confirmação após o envio (uma boa prática de segurança para evitar confirmar quais e-mails estão na base de dados).
+- **Recuperação de Senha:**
+  - **Solicitação:** A interface disponibiliza o formulário de resgate e exibe feedbacks neutros de confirmação após o envio (uma boa prática de segurança para evitar confirmar quais e-mails estão na base de dados).
   - **Redefinição:** Quando o usuário clica no link recebido por e-mail, o front-end intercepta o token diretamente via *URL parameters* (`?token=...`), renderiza a tela de nova senha e repassa os dados validados de volta para o backend.
 
 ---
 
-## ✅ Status
+### ⚙️ Página de Conta com Gerenciamento de Preferências
 
-O front-end está 100% operacional, entregando uma experiência ágil, fluida e agradável tanto em ambientes desktop quanto em dispositivos móveis.
-Novas funcionalidade estão por vir!
+Novo módulo (`account.html` / `account.js`) que permite ao usuário personalizador completamente sua experiência na plataforma.
+
+**Funcionalidades principais:**
+
+1. **Informações da Conta**
+   - E-mail conectado e data de criação da conta
+   - Opção de login com Google OAuth
+
+2. **Preferências Visuais**
+   - **Tema:** alterna entre modo escuro e modo claro com CSS Variables
+   - **Visão Compacta:** reduz espaçamentos e tamanhos de elementos em ~15-20% para melhor aproveitamento de espaço em mobile
+
+3. **Preferências de Comportamento**
+   - **Efeitos Sonoros:** habilita/desabilita áudio em 7 contextos diferentes
+   - **Confirmação ao Deletar:** exige confirmação antes de remover cards ou colunas
+   - **Posição de Novo Card:** define se cards novos aparecem no topo ou final da coluna
+
+4. **Estilo e Branding**
+   - **Cor Padrão:** color picker para escolher a cor primária dos cards
+
+**Sincronização:**
+- Todas as preferências são **sincronizadas em tempo real** tanto no `localStorage` (acesso imediato) quanto na API (persistência)
+- Alterações são aplicadas instantaneamente na interface
+- Preferências persistem entre sessões e dispositivos
+
+---
+
+### 🔊 Sistema de Áudio Integrado
+
+O sistema implementa efeitos sonoros contextuais em diferentes ações, melhorando o feedback tátil visual da experiência de uso.
+
+**Arquitetura (`scripts/utils/audioManager.js`):**
+- **Detecção de Compatibilidade:** o sistema detecta automaticamente qual formato de áudio o navegador suporta (WAV, MP3, OGG, AAC, AIFF)
+- **Fallback Inteligente:** se o formato preferido não for suportado, tenta alternativas em cascata
+- **Gerenciamento de Estado:** sincroniza preferência de áudio com localStorage e API
+
+**Eventos com Áudio:**
+- 🎵 **pick** (`drag.wav`) — Quando usuário inicia arrastar um card/coluna
+- 🎵 **drop** (`drop.wav/drop.aiff`) — Quando card/coluna é solto após movimentação
+- 🎵 **create** (`menu_click.wav`) — Ao criar novo card ou coluna
+- 🎵 **loaded** (`loaded_board.wav`) — Quando quadro termina carregamento
+- 🎵 **switch** (`switch.wav`) — Ao ativar/desativar preferências (tema, som, modo compacto, etc.)
+- 🎵 **trash_card** (`card_thrash.wav`) — Ao deletar um card
+- 🎵 **trash_column** (`column_thrash.wav`) — Ao deletar uma coluna
+
+**Implementação:**
+- Sons estão pré-carregados ao inicializar a página (`preloadSounds()`) para evitar latência
+- Erros de reprodução (ex: bloqueio de autoplay do navegador) são tratados silenciosamente
+- Preferência de áudio pode ser ativada/desativada a qualquer momento sem recarregar a página
+
+---
+
+### 📱 Modo Compacto para Mobile
+
+O modo compacto é uma variante otimizada da interface especialmente calibrada para **dispositivos móveis com telas pequenas** (< 600px), mantendo legibilidade e usabilidade.
+
+**Ativação:**
+- Toggle em `account.html` → "Visão Compacta"
+- Salva em preferências do usuário
+- Aplica classe `compact-mode` ao `body` que redimensiona globalmente
+
+**Redimensionamentos (`css/kanban.css`):**
+- **Colunas:** 320px → 260px de largura
+- **Cards:** 250px → 220px de largura, altura mínima 150px → 100px
+- **Padding/Espaçamentos:** ~30px → 20px (em cards e colunas)
+- **Tipografia:** títulos e conteúdos reduzem ~10-15%
+- **Border-radius e gaps:** ajustados proporcionalmente para manter harmonia visual
+
+**Benefício:**
+- Cabe até ~30% mais conteúdo na tela ao mesmo tempo
+- Mantém touch targets (botões/checkboxes) com tamanho adequado para toque
+- Responsivo também na página de conta (`css/account.css`)
+
+---
