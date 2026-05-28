@@ -22,8 +22,8 @@ Este projeto surgiu da vontade de aprender como implementar uma lógica de Drag 
 
 ## 🖼️ Prévia da Interface
 
-![Preview do Login](./img/kanban_board.png)
-![Preview do Quadro Kanban](./img/kanban_login.png)
+![Apresentação do Quadro 1](./assets/img/board_showcase1.gif)
+![Apresentação do Quadro 2](./assets/img/board_showcase2.gif)
 
 ---
 
