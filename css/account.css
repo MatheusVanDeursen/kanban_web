@@ -357,3 +357,37 @@ body.compact-mode .pref-input {
 .slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
 input:checked + .slider { background-color: var(--primary-color); }
 input:checked + .slider:before { transform: translateX(20px); }
+
+/* Footer com Links */
+.account-footer {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 50px;
+    padding-top: 30px;
+    border-top: 1px solid var(--border-color);
+    flex-wrap: wrap;
+}
+
+.footer-link {
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 0.9em;
+    opacity: 0.8;
+    transition: color 0.2s, opacity 0.2s;
+}
+
+.footer-link:hover {
+    color: var(--primary-color);
+    opacity: 1;
+}
+
+body.compact-mode .account-footer {
+    margin-top: 30px;
+    padding-top: 20px;
+    gap: 15px;
+}
+
+body.compact-mode .footer-link {
+    font-size: 0.85em;
+}

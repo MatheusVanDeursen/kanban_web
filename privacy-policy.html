@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Política de Privacidade - Kanban Board</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/privacy-policy.css">
+</head>
+<body>
+
+    <div class="privacy-container">
+        <header class="privacy-header">
+            <a href="kanban.html" class="back-btn"><i class="fas fa-arrow-left"></i> Voltar ao Quadro</a>
+            <h1>Política de Privacidade</h1>
+            <p class="last-updated">Última atualização: <span id="update-date"></span></p>
+        </header>
+
+        <!-- Introdução -->
+        <section class="privacy-section">
+            <h2><i class="fas fa-shield-alt"></i> Introdução</h2>
+            <p>
+                Bem-vindo ao Kanban Board. A sua privacidade é muito importante para nós. Esta Política de Privacidade explica como coletamos, usamos, divulgamos e protegemos suas informações quando você utiliza nossa aplicação.
+            </p>
+        </section>
+
+        <!-- Informações que Coletamos -->
+        <section class="privacy-section">
+            <h2><i class="fas fa-database"></i> Informações que Coletamos</h2>
+            
+            <h3>Informações Fornecidas Diretamente</h3>
+            <ul>
+                <li><strong>Email e Senha:</strong> Quando você cria uma conta ou faz login local</li>
+                <li><strong>Perfil Google:</strong> Ao optar por fazer login social (OAuth 2.0)</li>
+                <li><strong>Conteúdo do Quadro:</strong> Colunas, cards, títulos e descrições que você cria</li>
+                <li><strong>Preferências de Usuário:</strong> Tema, modo compacto, áudio, posição de cards, etc.</li>
+            </ul>
+
+            <h3>Informações Coletadas Automaticamente</h3>
+            <ul>
+                <li><strong>Dados de Navegação:</strong> Seu endereço IP, tipo de navegador, timestamps de acesso</li>
+                <li><strong>Dados de Uso:</strong> Interações com a interface, ações realizadas</li>
+                <li><strong>Dados Técnicos:</strong> Identificadores de sessão, cookies de autenticação</li>
+            </ul>
+        </section>
+
+        <!-- Como Usamos os Dados -->
+        <section class="privacy-section">
+            <h2><i class="fas fa-cogs"></i> Como Usamos os Dados</h2>
+            <ul>
+                <li>Fornecer, manter e melhorar o serviço do Kanban Board</li>
+                <li>Autenticar sua identidade e gerenciar sua conta</li>
+                <li>Salvar e sincronizar seu conteúdo entre dispositivos</li>
+                <li>Enviar notificações e e-mails transacionais (recuperação de senha, etc.)</li>
+                <li>Analisar uso da aplicação para melhorias contínuas</li>
+                <li>Cumprir obrigações legais e regulamentações</li>
+            </ul>
+        </section>
+
+        <!-- Segurança dos Dados -->
+        <section class="privacy-section">
+            <h2><i class="fas fa-lock"></i> Segurança dos Dados</h2>
+            <p>
+                Implementamos medidas de segurança tecnicamente adequadas para proteger suas informações contra acesso não autorizado, alteração, divulgação ou destruição. Isso inclui:
+            </p>
+            <ul>
+                <li>Criptografia SSL/TLS para transmissão de dados</li>
+                <li>Hash de senhas utilizando algoritmos seguros (bcrypt)</li>
+                <li>Autenticação baseada em JWT com expiração</li>
+                <li>Validação e sanitização de inputs</li>
+                <li>Acesso restrito ao banco de dados com credenciais seguras</li>
+            </ul>
+        </section>
+
+        <!-- Compartilhamento de Dados -->
+        <section class="privacy-section">
+            <h2><i class="fas fa-share-alt"></i> Compartilhamento de Dados</h2>
+            <p>
+                Não vendemos, alugamos ou compartilhamos suas informações pessoais com terceiros para fins de marketing.
+            </p>
+            <p>
+                Compartilhamos dados apenas com:
+            </p>
+            <ul>
+                <li><strong>Provedores de Serviço:</strong> Fornecedores de e-mail (Resend), hospedagem e infraestrutura que processam dados em nosso nome</li>
+                <li><strong>Autoridades Legais:</strong> Quando exigido por lei ou para proteger direitos legais</li>
+                <li><strong>Google (OAuth):</strong> Apenas o identificador fornecido por você durante login social</li>
+            </ul>
+        </section>
+
+        <!-- LGPD e Direitos do Usuário -->
+        <section class="privacy-section">
+            <h2><i class="fas fa-user-check"></i> LGPD e Seus Direitos</h2>
+            <p>
+                Em conformidade com a Lei Geral de Proteção de Dados (LGPD), você tem os seguintes direitos:
+            </p>
+            <ul>
+                <li><strong>Direito de Acesso:</strong> Acessar todas as suas informações pessoais armazenadas</li>
+                <li><strong>Direito de Retificação:</strong> Corrigir dados inexatos ou incompletos</li>
+                <li><strong>Direito de Exclusão:</strong> Solicitar a exclusão de seus dados (direito ao esquecimento)</li>
+                <li><strong>Direito à Portabilidade:</strong> Exportar seus dados em formato legível (JSON)</li>
+                <li><strong>Direito de Revogação de Consentimento:</strong> Retirar o consentimento a qualquer momento</li>
+                <li><strong>Direito de Oposição:</strong> Opor-se ao processamento de seus dados em certos contextos</li>
+            </ul>
+            <p>
+                Para exercer qualquer desses direitos, acesse sua página de conta e utilize as opções de exportação ou exclusão de dados, ou entre em contato conosco conforme informado na seção de contato.
+            </p>
+        </section>
+
+        <!-- Retenção de Dados -->
+        <section class="privacy-section">
+            <h2><i class="fas fa-hourglass-end"></i> Retenção de Dados</h2>
+            <ul>
+                <li><strong>Dados de Conta:</strong> Retidos enquanto sua conta estiver ativa</li>
+                <li><strong>Tokens de Recuperação de Senha:</strong> Expiram em 24 horas</li>
+                <li><strong>Logs de Acesso:</strong> Retidos por até 90 dias</li>
+                <li><strong>Dados Após Exclusão de Conta:</strong> Deletados permanentemente em até 30 dias</li>
+            </ul>
+        </section>
+
+        <!-- Cookies e Rastreamento -->
+        <section class="privacy-section">
+            <h2><i class="fas fa-cookie"></i> Cookies e Rastreamento</h2>
+            <p>
+                A aplicação utiliza localStorage e sessionStorage apenas para fins funcionais:
+            </p>
+            <ul>
+                <li><strong>Token de Autenticação:</strong> Armazenado localmente para manter sua sessão</li>
+                <li><strong>Preferências de Usuário:</strong> Tema, modo compacto, etc., armazenados para experiência personalizada</li>
+            </ul>
+            <p>
+                Não utilizamos cookies de rastreamento ou publicidade. Nenhum dado é compartilhado com redes de propaganda.
+            </p>
+        </section>
+
+        <!-- Mudanças na Política -->
+        <section class="privacy-section">
+            <h2><i class="fas fa-sync-alt"></i> Mudanças Nesta Política</h2>
+            <p>
+                Podemos atualizar esta Política de Privacidade periodicamente para refletir alterações em nossas práticas, tecnologia, requisitos legais e outros fatores. Notificaremos você sobre mudanças significativas via e-mail ou um aviso destacado na aplicação.
+            </p>
+        </section>
+
+        <!-- Contato -->
+        <section class="privacy-section contact-section">
+            <h2><i class="fas fa-envelope"></i> Entre em Contato</h2>
+            <p>
+                Se você tiver dúvidas sobre esta Política de Privacidade, desejar exercer seus direitos LGPD ou tiver preocupações sobre como seus dados são tratados, entre em contato:
+            </p>
+            <div class="contact-info">
+                <p><strong>Email:</strong> <a href="mailto:contato@kanban.matheusvandeursen.com">contato@kanban.matheusvandeursen.com</a></p>
+            </div>
+        </section>
+    </div>
+
+</body>
+<script type="module" src="scripts/pages/privacy-policy.js"></script>
+</html>
