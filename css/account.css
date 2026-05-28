@@ -250,22 +250,41 @@ button {
     border-color: var(--primary-color);
 }
 
+/* Select com melhor estilização */
+.pref-select {
+    padding: 10px 12px;
+    min-width: 120px;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23e6b905' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 18px;
+    padding-right: 32px;
+}
+
+/* Color Picker - Circular com tamanho definido */
 .pref-color-picker {
     -webkit-appearance: none;
     appearance: none;
     padding: 0;
-    height: 38px;
-    width: 60px;
+    height: 44px;
+    width: 44px;
     background-color: transparent;
     border: 2px solid var(--border-color);
-    border-radius: 8px;
+    border-radius: 50%;
     cursor: pointer;
-    flex-shrink: 0; /* Garante que aparecerá e não vai espremer no celular */
-    transition: border-color 0.2s;
+    flex-shrink: 0;
+    transition: border-color 0.2s, transform 0.2s;
 }
 
 .pref-color-picker:hover {
     border-color: var(--primary-color);
+    transform: scale(1.08);
+}
+
+.pref-color-picker:focus {
+    border-color: var(--primary-color);
+    outline: none;
 }
 
 .pref-color-picker::-webkit-color-swatch-wrapper {
@@ -274,12 +293,44 @@ button {
 
 .pref-color-picker::-webkit-color-swatch {
     border: none;
-    border-radius: 4px;
+    border-radius: 50%;
 }
 
 .pref-color-picker::-moz-color-swatch {
     border: none;
-    border-radius: 4px;
+    border-radius: 50%;
+}
+
+/* Preferências com select e color picker - melhor espaçamento */
+.preference-select,
+.preference-color {
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.preference-select span,
+.preference-color span {
+    width: 100%;
+    flex-basis: 100%;
+    text-align: left;
+}
+
+.preference-select .pref-input,
+.preference-color .pref-input {
+    margin-top: -5px;
+    flex-shrink: 0;
+}
+
+/* Estatísticas - Ajusta ordem visual (label antes de valor) */
+.stat-box {
+    display: flex;
+    flex-direction: column-reverse;
+    text-align: center;
+}
+
+.stat-box p {
+    order: -1;
+    margin-bottom: 10px;
 }
 
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -340,6 +391,16 @@ body.compact-mode .pref-input {
     font-size: 0.9em;
 }
 
+body.compact-mode .pref-select {
+    min-width: 100px;
+    padding: 8px 10px;
+}
+
+body.compact-mode .pref-color-picker {
+    height: 38px;
+    width: 38px;
+}
+
 /* Responsividade (Mobile) */
 @media (max-width: 600px) {
     .action-row { flex-direction: column; align-items: stretch; }
@@ -348,6 +409,40 @@ body.compact-mode .pref-input {
     .account-header h1 { font-size: 1.8em; }
     .linked-account-item { flex-direction: column; gap: 15px; align-items: stretch; text-align: center; }
     .account-info { justify-content: center; }
+
+    .preference-item {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .preference-select span,
+    .preference-color span {
+        text-align: left;
+    }
+
+    .preference-select .pref-input,
+    .preference-color .pref-input {
+        width: 100%;
+        margin-top: 5px;
+    }
+
+    .pref-select {
+        width: 100%;
+        min-width: unset;
+    }
+
+    .pref-color-picker {
+        height: 40px;
+        width: 40px;
+    }
+
+    .stat-box {
+        padding: 15px;
+    }
+
+    .stat-box h3 {
+        font-size: 1.5em;
+    }
 }
 
 /* Utilização do Switch já criado anteriormente */

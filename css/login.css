@@ -235,6 +235,30 @@ button#submit-btn:hover {
     font-size: 1em;
 }
 
+/* --- Privacy Link Container (Fora da box) --- */
+.privacy-link-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.privacy-link {
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 0.85em;
+    opacity: 0.75;
+    transition: color 0.2s, opacity 0.2s;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 8px 15px;
+    border-radius: 6px;
+    display: inline-block;
+}
+
+.privacy-link:hover {
+    color: var(--primary-color);
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.5);
+}
+
 /* --- Footer com Link de Privacidade --- */
 .login-card > div:last-child {
     text-align: center;
@@ -255,5 +279,14 @@ button#submit-btn:hover {
 
     h1 {
         font-size: 1.6em; /* Reduz o tamanho do título para economizar espaço vertical */
+    }
+
+    .privacy-link-container {
+        margin-top: 15px;
+    }
+
+    .privacy-link {
+        font-size: 0.8em;
+        padding: 6px 12px;
     }
 }
