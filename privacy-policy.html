@@ -21,7 +21,27 @@
         <section class="privacy-section">
             <h2><i class="fas fa-shield-alt"></i> Introdução</h2>
             <p>
-                Bem-vindo ao Kanban Board. A sua privacidade é muito importante para nós. Esta Política de Privacidade explica como coletamos, usamos, divulgamos e protegemos suas informações quando você utiliza nossa aplicação.
+                Bem-vindo ao Kanban Board. A sua privacidade é muito importante para nós. Esta Política de Privacidade explica como coletamos, usamos, divulgamos e protegemos suas informações quando você utiliza nossa aplicação, em conformidade com a <strong>Lei Geral de Proteção de Dados (LGPD)</strong>.
+            </p>
+            <p>
+                <strong>ℹ️ Nota Importante:</strong> Este é um projeto de portfólio educacional desenvolvido com foco em demonstrar boas práticas de desenvolvimento web, segurança e conformidade legal. Não somos uma empresa comercial.
+            </p>
+        </section>
+
+        <!-- Identificação do Controlador -->
+        <section class="privacy-section">
+            <h2><i class="fas fa-id-card"></i> Controlador de Dados</h2>
+            <p>
+                Responsável pela coleta, processamento e proteção de seus dados pessoais:
+            </p>
+            <div class="controller-info">
+                <p><strong>Nome:</strong> Matheus Van Deursen</p>
+                <p><strong>Email de Contato:</strong> <a href="mailto:contato@kanban.matheusvandeursen.com">contato@kanban.matheusvandeursen.com</a></p>
+                <p><strong>País:</strong> Brasil</p>
+                <p><strong>Tipo:</strong> Projeto de Portfólio Educacional</p>
+            </div>
+            <p>
+                Para questões relacionadas à privacidade, proteção de dados ou para exercer seus direitos LGPD, entre em contato através do email informado acima.
             </p>
         </section>
 
@@ -31,18 +51,40 @@
             
             <h3>Informações Fornecidas Diretamente</h3>
             <ul>
-                <li><strong>Email e Senha:</strong> Quando você cria uma conta ou faz login local</li>
-                <li><strong>Perfil Google:</strong> Ao optar por fazer login social (OAuth 2.0)</li>
+                <li><strong>Email:</strong> Usado para autenticação, recuperação de conta e comunicações transacionais</li>
+                <li><strong>Senha:</strong> Hash criptografado usando bcrypt (nunca armazenado em texto plano)</li>
+                <li><strong>Tipo de Autenticação:</strong> Se você usa autenticação local ou Google OAuth</li>
+                <li><strong>Identificador Google (provider_id):</strong> Apenas quando você escolhe login com Google (identificador único, sem acesso a outros dados da sua conta Google)</li>
                 <li><strong>Conteúdo do Quadro:</strong> Colunas, cards, títulos e descrições que você cria</li>
-                <li><strong>Preferências de Usuário:</strong> Tema, modo compacto, áudio, posição de cards, etc.</li>
+                <li><strong>Preferências de Usuário:</strong> Tema (claro/escuro), modo compacto, efeitos sonoros, posição de cards, cor padrão, etc.</li>
             </ul>
 
             <h3>Informações Coletadas Automaticamente</h3>
             <ul>
-                <li><strong>Dados de Navegação:</strong> Seu endereço IP, tipo de navegador, timestamps de acesso</li>
-                <li><strong>Dados de Uso:</strong> Interações com a interface, ações realizadas</li>
-                <li><strong>Dados Técnicos:</strong> Identificadores de sessão, cookies de autenticação</li>
+                <li><strong>Tokens de Autenticação:</strong> JWT para manter sua sessão segura</li>
+                <li><strong>Tokens de Recuperação de Senha:</strong> Tokens temporários com expiração de 24 horas, gerados apenas quando você solicita reset de senha</li>
+                <li><strong>Dados Técnicos Mínimos:</strong> Endereço IP (apenas quando necessário para funcionalidade ou segurança), tipo de navegador, timestamps de acesso</li>
             </ul>
+
+            <p class="highlight">
+                <strong>❌ O que NÃO coletamos:</strong> Não utilizamos ferramentas de analytics, pixel tracking, heatmaps ou qualquer tecnologia de rastreamento de comportamento. Seus dados de uso não são monitorados ou vendidos.
+            </p>
+        </section>
+
+        <!-- Infraestrutura e Processamento de Dados -->
+        <section class="privacy-section">
+            <h2><i class="fas fa-server"></i> Infraestrutura e Processamento de Dados</h2>
+            <p>
+                Nosso sistema utiliza a seguinte arquitetura para processar e proteger seus dados:
+            </p>
+            <ul>
+                <li><strong>Frontend:</strong> Hospedado no GitHub Pages (infraestrutura do GitHub, sem coleta de dados)</li>
+                <li><strong>API e Banco de Dados:</strong> Servidor próprio (self-hosted) executando Node.js com PostgreSQL</li>
+                <li><strong>Proxy e Segurança:</strong> Cloudflare como proxy reverso e túnel seguro (oferece proteção contra DDoS e é intermediária das requisições)</li>
+            </ul>
+            <p>
+                Isso significa que suas requisições passam pela infraestrutura da Cloudflare para chegar ao nosso servidor. A Cloudflare tem suas próprias políticas de privacidade e pode coletar dados técnicos conforme descrito em sua documentação.
+            </p>
         </section>
 
         <!-- Como Usamos os Dados -->
@@ -52,9 +94,9 @@
                 <li>Fornecer, manter e melhorar o serviço do Kanban Board</li>
                 <li>Autenticar sua identidade e gerenciar sua conta</li>
                 <li>Salvar e sincronizar seu conteúdo entre dispositivos</li>
-                <li>Enviar notificações e e-mails transacionais (recuperação de senha, etc.)</li>
-                <li>Analisar uso da aplicação para melhorias contínuas</li>
-                <li>Cumprir obrigações legais e regulamentações</li>
+                <li>Enviar notificações e e-mails transacionais (recuperação de senha, confirmação de conta, etc.)</li>
+                <li>Analisar erros e melhorias técnicas (logs de servidor para debugging, sem rastreamento de usuário)</li>
+                <li>Cumprir obrigações legais e regulamentações (incluindo LGPD)</li>
             </ul>
         </section>
 
@@ -62,34 +104,68 @@
         <section class="privacy-section">
             <h2><i class="fas fa-lock"></i> Segurança dos Dados</h2>
             <p>
-                Implementamos medidas de segurança tecnicamente adequadas para proteger suas informações contra acesso não autorizado, alteração, divulgação ou destruição. Isso inclui:
+                Implementamos medidas técnicas e organizacionais razoáveis para proteger suas informações contra acesso não autorizado, alteração, divulgação ou destruição. Isso inclui:
             </p>
             <ul>
-                <li>Criptografia SSL/TLS para transmissão de dados</li>
-                <li>Hash de senhas utilizando algoritmos seguros (bcrypt)</li>
-                <li>Autenticação baseada em JWT com expiração</li>
-                <li>Validação e sanitização de inputs</li>
-                <li>Acesso restrito ao banco de dados com credenciais seguras</li>
+                <li>Criptografia SSL/TLS para transmissão de dados (HTTPS obrigatório)</li>
+                <li>Hash de senhas utilizando bcrypt com custo computacional adequado</li>
+                <li>Autenticação baseada em JWT com expiração de sessão</li>
+                <li>Validação e sanitização rigorosa de inputs</li>
+                <li>Acesso restrito ao banco de dados com credenciais de segurança</li>
+                <li>Isolamento da API em servidor próprio protegido</li>
             </ul>
+            <p>
+                <strong>Limitações:</strong> Nenhuma medida de segurança é 100% garantida. Embora implementemos proteções robustas, pedimos que você mantenha suas credenciais seguras e nos notifique imediatamente em caso de suspeita de comprometimento.
+            </p>
         </section>
 
         <!-- Compartilhamento de Dados -->
         <section class="privacy-section">
             <h2><i class="fas fa-share-alt"></i> Compartilhamento de Dados</h2>
             <p>
-                Não vendemos, alugamos ou compartilhamos suas informações pessoais com terceiros para fins de marketing.
+                Não vendemos, alugamos ou compartilhamos suas informações pessoais com terceiros para fins de marketing ou publicidade.
             </p>
             <p>
                 Compartilhamos dados apenas com:
             </p>
             <ul>
-                <li><strong>Provedores de Serviço:</strong> Fornecedores de e-mail (Resend), hospedagem e infraestrutura que processam dados em nosso nome</li>
-                <li><strong>Autoridades Legais:</strong> Quando exigido por lei ou para proteger direitos legais</li>
-                <li><strong>Google (OAuth):</strong> Apenas o identificador fornecido por você durante login social</li>
+                <li><strong>Resend (Provedor de Email):</strong> Enviamos seu email apenas para disparar emails transacionais (boas-vindas, recuperação de senha, confirmações). Não temos controle total sobre como Resend processa estes dados — consulte a política deles.</li>
+                <li><strong>Google (durante OAuth):</strong> Se você fizer login com Google, recebemos apenas o seu identificador único (provider_id). Não acessamos email, fotos, calendário ou qualquer outra informação da sua conta Google.</li>
+                <li><strong>Cloudflare (Proxy):</strong> Como proxy reverso, Cloudflare tem acesso a dados técnicos das suas requisições (IP, headers HTTP, etc.)</li>
+                <li><strong>Autoridades Legais:</strong> Quando exigido por ordem judicial ou para proteger direitos legais</li>
             </ul>
         </section>
 
-        <!-- LGPD e Direitos do Usuário -->
+        <!-- Transferência Internacional de Dados -->
+        <section class="privacy-section">
+            <h2><i class="fas fa-globe"></i> Transferência Internacional de Dados</h2>
+            <p>
+                Seus dados podem ser processados por serviços localizados fora do Brasil, incluindo:
+            </p>
+            <ul>
+                <li><strong>Cloudflare:</strong> Servidores em múltiplos países para proxy e segurança</li>
+                <li><strong>Resend:</strong> Serviço de email que pode processar dados em servidores internacionais</li>
+                <li><strong>Google:</strong> Se você usar OAuth, Google processa o identificador em seus servidores</li>
+            </ul>
+            <p>
+                Ao usar este serviço, você consente com a transferência internacional de seus dados. Garantimos que todos os provedores implementem medidas adequadas de proteção conforme LGPD.
+            </p>
+        </section>
+
+        <!-- Base Legal (Fundamento Legal LGPD) -->
+        <section class="privacy-section">
+            <h2><i class="fas fa-gavel"></i> Base Legal para Processamento (LGPD)</h2>
+            <p>
+                Processamos seus dados apenas com fundamento legal claro:
+            </p>
+            <ul>
+                <li><strong>Execução de Contrato:</strong> Para fornecer o serviço do Kanban Board (criar conta, salvar conteúdo, sincronizar dados)</li>
+                <li><strong>Consentimento:</strong> Você explicitamente consente quando cria uma conta ou utiliza a aplicação</li>
+                <li><strong>Legítimo Interesse:</strong> Melhorar a segurança, prevenir fraude, cumprir obrigações legais</li>
+                <li><strong>Obrigação Legal:</strong> Quando exigido por lei ou autoridades</li>
+            </ul>
+        </section>
+
         <section class="privacy-section">
             <h2><i class="fas fa-user-check"></i> LGPD e Seus Direitos</h2>
             <p>
@@ -104,7 +180,16 @@
                 <li><strong>Direito de Oposição:</strong> Opor-se ao processamento de seus dados em certos contextos</li>
             </ul>
             <p>
-                Para exercer qualquer desses direitos, acesse sua página de conta e utilize as opções de exportação ou exclusão de dados, ou entre em contato conosco conforme informado na seção de contato.
+                Para exercer qualquer desses direitos, entre em contato através do email abaixo com o assunto correspondente:
+            </p>
+            <ul style="list-style: none; padding-left: 0;">
+                <li><strong>[LGPD - Acesso]:</strong> Para solicitar cópia de seus dados</li>
+                <li><strong>[LGPD - Exclusão]:</strong> Para solicitar exclusão permanente de conta e dados</li>
+                <li><strong>[LGPD - Portabilidade]:</strong> Para exportar dados em formato JSON</li>
+                <li><strong>[LGPD - Retificação]:</strong> Para corrigir dados pessoais</li>
+            </ul>
+            <p>
+                Email para requisições: <a href="mailto:contato@kanban.matheusvandeursen.com?subject=[LGPD]%20Solicitacao">contato@kanban.matheusvandeursen.com</a>
             </p>
         </section>
 
@@ -115,7 +200,42 @@
                 <li><strong>Dados de Conta:</strong> Retidos enquanto sua conta estiver ativa</li>
                 <li><strong>Tokens de Recuperação de Senha:</strong> Expiram em 24 horas</li>
                 <li><strong>Logs de Acesso:</strong> Retidos por até 90 dias</li>
-                <li><strong>Dados Após Exclusão de Conta:</strong> Deletados permanentemente em até 30 dias</li>
+                <li><strong>Exclusão de Conta:</strong> Quando você solicita exclusão, seus dados são deletados logicamente (imediatamente) e fisicamente (em até 30 dias). Cópias de backup podem ser retidas por até 30 dias adicionais.</li>
+            </ul>
+        </section>
+
+        <!-- Emails Transacionais -->
+        <section class="privacy-section">
+            <h2><i class="fas fa-envelope"></i> Emails Transacionais (Resend)</h2>
+            <p>
+                Enviamos apenas emails transacionais necessários para operação do serviço. Nunca enviamos marketing ou newsletters sem seu consentimento explícito.
+            </p>
+            <p><strong>Emails que você receberá:</strong></p>
+            <ul>
+                <li>📧 Boas-vindas após criar conta</li>
+                <li>🔐 Link de recuperação de senha (válido por 24h)</li>
+                <li>✅ Confirmações de alteração de account (email, senha)</li>
+                <li>⚠️ Confirmação de exclusão de conta</li>
+            </ul>
+            <p>
+                Todos os emails são disparados via <strong>Resend</strong>, que tem suas próprias políticas de privacidade. Seu email é compartilhado apenas para este propósito específico.
+            </p>
+        </section>
+
+        <!-- Incidentes de Segurança -->
+        <section class="privacy-section">
+            <h2><i class="fas fa-exclamation-circle"></i> Incidentes de Segurança</h2>
+            <p>
+                Caso ocorra um incidente que comprometa a confidencialidade, integridade ou disponibilidade de seus dados pessoais, você será notificado no menor prazo possível, conforme exigido pela LGPD.
+            </p>
+            <p>
+                A notificação será enviada para o email cadastrado em sua conta, incluindo:
+            </p>
+            <ul>
+                <li>Natureza do incidente</li>
+                <li>Dados que foram potencialmente afetados</li>
+                <li>Medidas que estamos tomando para resolver</li>
+                <li>Instruções de como você pode se proteger</li>
             </ul>
         </section>
 
