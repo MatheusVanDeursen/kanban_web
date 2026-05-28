@@ -299,8 +299,154 @@ body.compact-mode .highlight p {
         font-size: 0.9em;
     }
 
+    .contact-info p {
+        font-size: 1em;
+    }
+
+    .controller-info,
+    .highlight {
+        padding: 12px 15px;
+        margin: 10px 0;
+        font-size: 0.9em;
+    }
+
     .controller-info p,
     .highlight p {
         margin: 6px 0;
+    }
+}
+
+/* ========== FOOTER PROFISSIONAL ========== */
+.footer {
+    background-color: var(--section-bg);
+    border-top: 1px solid var(--border-color);
+    margin-top: 60px;
+    padding: 40px 20px;
+    width: 100%;
+}
+
+.footer-container {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.footer-section {
+    flex: 1;
+    min-width: 200px;
+    display: flex;
+    justify-content: center;
+}
+
+/* Marca / Copyright */
+.footer-brand {
+    text-align: center;
+}
+
+.footer-brand .copyright {
+    margin: 0;
+    font-weight: 600;
+    font-size: 0.95em;
+    color: var(--text-color);
+}
+
+.footer-brand .tagline {
+    margin: 5px 0 0 0;
+    font-size: 0.85em;
+    opacity: 0.7;
+    color: var(--text-color);
+}
+
+.footer-brand .tech-stack {
+    margin: 8px 0 0 0;
+    font-size: 0.8em;
+    opacity: 0.6;
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+/* Links Úteis */
+.footer-links {
+    display: flex;
+    gap: 25px;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer-links a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-size: 0.9em;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: var(--primary-hover);
+    transform: translateY(-2px);
+}
+
+/* Redes Sociais */
+.footer-social {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    align-items: center;
+}
+
+.social-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.03);
+    color: var(--primary-color);
+    font-size: 1.2em;
+    transition: all 0.3s ease;
+    border: 1px solid var(--border-color);
+    text-decoration: none;
+}
+
+.social-icon:hover {
+    background-color: var(--primary-color);
+    color: #222438;
+    transform: scale(1.1) translateY(-3px);
+    box-shadow: 0 5px 15px rgba(230, 185, 5, 0.3);
+}
+
+/* Responsividade - Mobile */
+@media (max-width: 768px) {
+    .footer-container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 25px;
+    }
+
+    .footer-section {
+        width: 100%;
+        min-width: unset;
+    }
+
+    .footer-links {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .footer-links a {
+        font-size: 0.95em;
+    }
+
+    .footer-brand .tagline {
+        font-size: 0.8em;
+    }
+
+    .footer-brand .tech-stack {
+        font-size: 0.75em;
     }
 }
