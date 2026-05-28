@@ -457,6 +457,7 @@ body.compact-mode .add-column-col span {
 
 .menu-btn.logout:hover { color: #ec5f5b; }
 .menu-btn.account:hover { color: #e6b905; } /* Hover amarelo padrão do sistema */
+.menu-btn.privacy:hover { color: #e6b905; } /* Hover amarelo padrão do sistema */
 
 /* --- Switch de Tema --- */
 .theme-switch-row {

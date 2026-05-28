@@ -163,6 +163,18 @@ button {
     border-radius: 10px;
     margin-bottom: 10px;
     gap: 15px; /* Garante que os controles e textos não se misturem */
+    flex-wrap: nowrap; /* Força tudo a ficar em uma linha */
+}
+
+.preference-item > span:first-child {
+    flex-shrink: 0;
+    text-align: left;
+}
+
+.preference-item > label.switch,
+.preference-item > .pref-input {
+    flex-shrink: 0; /* Nunca encolhe os controles */
+    margin-left: auto; /* Empurra para a direita */
 }
 .account-info { display: flex; align-items: center; gap: 15px; font-size: 1.2em; font-weight: 600; }
 
@@ -260,6 +272,25 @@ button {
     background-position: right 8px center;
     background-size: 18px;
     padding-right: 32px;
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.2s, background-color 0.2s;
+    font-weight: 500;
+}
+
+.pref-select:hover {
+    background-color: rgba(230, 185, 5, 0.08);
+    border-color: var(--primary-color);
+}
+
+.pref-select:focus {
+    border-color: var(--primary-color);
+    background-color: rgba(230, 185, 5, 0.12);
 }
 
 /* Color Picker - Circular com tamanho definido */
@@ -274,6 +305,7 @@ button {
     border-radius: 50%;
     cursor: pointer;
     flex-shrink: 0;
+    margin: 0; /* Remove margin padrão */
     transition: border-color 0.2s, transform 0.2s;
 }
 
@@ -304,21 +336,27 @@ button {
 /* Preferências com select e color picker - melhor espaçamento */
 .preference-select,
 .preference-color {
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 12px;
 }
 
 .preference-select span,
 .preference-color span {
-    width: 100%;
-    flex-basis: 100%;
+    white-space: nowrap;
     text-align: left;
+    flex-shrink: 1;
+    min-width: 0;
 }
 
 .preference-select .pref-input,
 .preference-color .pref-input {
-    margin-top: -5px;
     flex-shrink: 0;
+    margin: 0;
+}
+
+.preference-color .pref-color-picker {
+    width: 44px;
+    height: 44px;
 }
 
 /* Estatísticas - Ajusta ordem visual (label antes de valor) */
@@ -411,24 +449,26 @@ body.compact-mode .pref-color-picker {
     .account-info { justify-content: center; }
 
     .preference-item {
-        flex-direction: column;
-        gap: 10px;
+        flex-wrap: nowrap;
+        gap: 12px;
+        min-height: 50px;
     }
 
-    .preference-select span,
-    .preference-color span {
-        text-align: left;
+    .preference-item > span:first-child {
+        flex-shrink: 1;
+        min-width: 120px;
     }
 
-    .preference-select .pref-input,
-    .preference-color .pref-input {
-        width: 100%;
-        margin-top: 5px;
+    .preference-item > .pref-select,
+    .preference-item > .pref-color-picker {
+        flex-shrink: 0;
+        margin-left: auto;
     }
 
     .pref-select {
-        width: 100%;
-        min-width: unset;
+        min-width: 100px;
+        padding: 8px 10px;
+        font-size: 0.9em;
     }
 
     .pref-color-picker {
