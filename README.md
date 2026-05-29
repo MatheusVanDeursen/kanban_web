@@ -1,7 +1,7 @@
 # Kanban Board Web UI 🎨
 
 Interface web do **Kanban Board**, construída em **Vanilla JavaScript** (sem frameworks) e consumindo a API do projeto.  
-Este repositório concentra o front-end da aplicação (SPA), com foco em simplicidade, controle direto do DOM e organização modular do código.
+Este repositório concentra o front-end da aplicação (estruturado como uma **MPA - Multi-Page Application**), com foco em simplicidade, controle direto do DOM e organização modular do código.
 
 > Nota: a aplicação agora conta com **suporte completo a dispositivos móveis**, garantindo uma experiência de Drag & Drop fluida via toque e uma interface totalmente responsiva.
 
@@ -29,7 +29,7 @@ Este projeto surgiu da vontade de aprender como implementar uma lógica de Drag 
 
 ## 📸 Fluxo de Navegação e Estados do Cliente
 
-O roteamento e a troca de telas acontecem no cliente (*Client-Side Routing*), evitando requisições de páginas adicionais ao servidor de hospedagem estática.
+A aplicação adota uma arquitetura de múltiplas páginas (MPA). O controle de acesso (verificação de tokens) e os redirecionamentos de estado ocorrem no cliente de forma dinâmica.
 
 ```mermaid
 graph TD
@@ -60,14 +60,14 @@ A interface foi implementada sem frameworks (React/Vue/Angular) para manter o bu
 
 ---
 
-### 🧭 Roteamento leve para hospedagem estática
+### 🧭 Navegação leve e Controle de Acesso Estático
 
 Para lidar com limitações comuns de hospedagem estática (ex.: GitHub Pages), o ponto de entrada (`index.html`) atua como roteador simples.
 
 **Em linhas gerais:**
-- Intercepta o carregamento inicial
+- Intercepta o carregamento inicial das páginas
 - Verifica presença/validade do token no `localStorage`
-- Redireciona usando `window.location.replace` (evita histórico desnecessário)
+- Redireciona usuários entre as páginas (ex: `/login.html` ou `/kanban.html`) usando `window.location.replace` para evitar histórico desnecessário
 
 ---
 
@@ -195,5 +195,16 @@ O modo compacto é uma variante otimizada da interface especialmente calibrada p
 - Cabe até ~30% mais conteúdo na tela ao mesmo tempo
 - Mantém touch targets (botões/checkboxes) com tamanho adequado para toque
 - Responsivo também na página de conta (`css/account.css`)
+
+---
+
+### 🛡️ Política de Privacidade e Transparência (LGPD)
+
+Para demonstrar boas práticas de segurança, transparência e adequação legal em projetos web, o sistema conta com uma página dedicada à **Política de Privacidade** (`privacy-policy.html`).
+
+**Destaques da implementação:**
+- **Conformidade (LGPD):** Documentação clara e em linguagem simples sobre quais dados são coletados (e-mail, preferências, conteúdo do quadro), infraestrutura utilizada e direitos do usuário.
+- **Privacidade por Padrão (*Privacy by Default*):** A documentação garante e explica a ausência total de rastreadores, ferramentas de *analytics* ou cookies de publicidade na plataforma.
+- **Integração Visual Inteligente:** Através do script `privacy-policy.js`, a página detecta as preferências locais do usuário para aplicar automaticamente o modo escuro/claro e o modo compacto, mantendo a harmonia visual. Além disso, o botão de navegação se adapta contextualmente, redirecionando para o login ou para o quadro dependendo se o usuário possui um token ativo.
 
 ---
